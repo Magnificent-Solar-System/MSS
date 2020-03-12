@@ -1,41 +1,36 @@
 <head>
-    <!-- setting / parameters -->
-    <script src="settings.js"></script>
-    <!-- globals -->
-    <script> 
-        var gl;
-        var canvas;
-        var camera;
-    </script>
-    <!-- techniques -->
-    <!-- base class -->
-    <script src="technique/technique.js"></script>
-    <!-- mytechnique -->
-    <script src="technique/planet/tchPlanet.vert.js"></script>
-    <script src="technique/planet/tchPlanet.frag.js"></script>
-    <script src="technique/planet/tchPlanet.js"></script>
-    
-    <!--  math  -->
     <script src="math/umath.js"></script>
     <script src="math/vec3.js"></script>
     <script src="math/vec4.js"></script>
     <script src="math/mat4.js"></script>
     
-    <!--  modules  -->
-    <!-- creating geometry runtime -->
+    <script src="settings.js"></script>
+    <script src="globals.js"></script>
+    
+    <script src="technique/technique.js"></script>
+    <script src="technique/planet/TechniquePlanet.vert.js"></script>
+    <script src="technique/planet/TechniquePlanet.frag.js"></script>
+    <script src="technique/planet/TechniquePlanet.js"></script>
+    <script src="technique/postProcessing/TechniquePostProcessing.vert.js"></script>
+    <script src="technique/postProcessing/TechniquePostProcessing.frag.js"></script>
+    <script src="technique/postProcessing/TechniquePostProcessing.js"></script>
+    <script src="technique/plainColor/TechniquePlainColor.vert.js"></script>
+    <script src="technique/plainColor/TechniquePlainColor.frag.js"></script>
+    <script src="technique/plainColor/TechniquePlainColor.js"></script>
+    <script src="technique/star/TechniqueStar.vert.js"></script>
+    <script src="technique/star/TechniqueStar.frag.js"></script>
+    <script src="technique/star/TechniqueStar.js"></script>
+    
     <script src="modules/geometry.js"></script> 
-    <!-- handling user input -->
     <script src="modules/input.js"></script>
+    <script src="modules/postprocessing.js"></script>
     
-    <!--  objects  -->
     <script src="objects/camera.js"></script>
-    <script src="objects/planet.js"></script>
+    <script src="objects/body.js"></script>
     
-    <!-- loading -->
     <script defer src="loading/initialization.js"></script>
     <script defer src="loading/data.js"></script>
     
-    <!-- main script -->
     <script defer src="main.js"></script>
 </head>
 <body></body>

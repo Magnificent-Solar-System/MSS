@@ -1,4 +1,4 @@
-class tchPlanet extends Technique {
+class TechniquePlanet extends Technique {
     constructor() {
         super();
         super.AddShader(gl.FRAGMENT_SHADER, tchPlanet_frag);

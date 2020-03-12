@@ -1,1 +1,0 @@
-sun = createSphere(32, 32, 1);

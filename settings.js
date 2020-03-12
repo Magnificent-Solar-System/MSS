@@ -1,3 +1,8 @@
+/* PROJECTION MATRIX */
+const zNearPlane = 0.01;
+const zFarPlane = 100.0;
+const fov = 1.2;
+
 /* RENDER TARGET */
 
 const targetTextureWidth = 800;
@@ -9,7 +14,8 @@ var rotationSpeed = 1.2;
 var moveSpeed = 0.05;
 
 
-/* PLANETS */
+/* ASTRONOMY */
 
-var planetParallels = 128;
-var planetMeridians = 128;
+const planetParallels = 128;
+const planetMeridians = 128;
+const SunColor = new vec4(1, 1, 0, 1);

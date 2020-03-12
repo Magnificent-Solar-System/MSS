@@ -1,4 +1,6 @@
-function createSphere(parallelsCount, meridiansCount, radius) {
+function createSphere(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
+    generateNormales = (generateNormales === undefined ? false : generateNormales);
+    generateTexCoords = (generateTexCoords === undefined ? false : generateTexCoords);
     let vertices = [];
     for(let i = 0; i <= parallelsCount; ++i) {
         let theta = Math.PI * i / parallelsCount;
@@ -13,10 +15,13 @@ function createSphere(parallelsCount, meridiansCount, radius) {
             var ny = cosTheta;
             var nz = sinPhi * sinTheta;
             
-            let u = 1 - (j / meridiansCount);
-            let v = 1 - (i / parallelsCount);
-            vertices.push(radius * nx, radius * ny, radius * nz, u, v, nx, ny, nz);
-            
+            vertices.push(radius * nx, radius * ny, radius * nz);
+            if(generateTexCoords) {
+                let u = 1 - (j / meridiansCount);
+                let v = 1 - (i / parallelsCount);
+                vertices.push(u, v);
+            }
+            if(generateNormales) vertices.push(nx, ny, nz);
         }
     }
     vertexBuffer = gl.createBuffer();
