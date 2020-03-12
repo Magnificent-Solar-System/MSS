@@ -1,0 +1,1 @@
+earth = new Planet(new vec3(0, 0, 0), new vec3(1, 0, 0), 5.972e24, 1.0);
