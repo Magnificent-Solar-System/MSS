@@ -53,9 +53,10 @@ function mainLoop(time_now) {
         planets[i].position = planets[i].position.add(planets[i].velocity.mul(deltaTime));
     }
     //planets-draw
+    tchPlanet.Use(vp, sun.position);
     for(let i = 0; i < 8; i++) {
         mat4.Translation(w, planets[i].position);
-        tchPlanet.Use(w, vp, sun.position);
+        tchPlanet.SetWorldMatrix(w);
         planets[i].bindArrayBuffer();
         tchPlanet.SetupAttributes();
         planets[i].draw();
