@@ -39,6 +39,13 @@ class vec3 {
     cross(v) {
         return new vec3(this.y * v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x);
     }
+    inv() {
+        return new vec3(-this.x, -this.y, -this.z);
+    }
+    norm() {
+        let k = 1.0 / this.length;
+        return new vec3(this.x * k, this.y * k, this.z * k);
+    }
     
     /* normalizes vector (returns unit vector) */
     static norm(v) {
@@ -48,6 +55,9 @@ class vec3 {
     /* inverts vector */
     static inv(v) {
         return new vec3(v.x, v.y, v.z);
+    }
+    static cross(v1, v2) {
+        return new vec3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
     }
     
     static fromScalar(s) {
