@@ -2,6 +2,8 @@ camera = new Camera(new vec3(0, 0, -1), vec3.unitZ(), vec3.unitY());
 
 requestAnimationFrame(mainLoop);
 
+var t = 0;
+
 var time_last = 0;
 function mainLoop(time_now) {
     Postprocessing.BeginDrawing();
@@ -9,13 +11,20 @@ function mainLoop(time_now) {
     let deltaTime = 0.001 * (time_now - time_last);
     time_last = time_now;
 
+    t += deltaTime;
+
     camera.update();
     let vp = new mat4(); 
     mat4.Multiply(vp, camera.viewMatrix,  Postprocessing.projectionMatrix);
     let w = new mat4();
     
     //draw sun
-    mat4.Translation(w, sun.position);
+    let s = new mat4();
+    let r = new mat4();
+    mat4.Translation(s, sun.position);
+    let sc = Math.cos(t)+1;
+    mat4.Scale(r, new vec3(sc,sc,sc));
+    mat4.Multiply(w, r, s);
     let m = new mat4();
     mat4.Multiply(m, w, vp);
 
