@@ -6,7 +6,8 @@ var t = 0;
 
 var time_last = 0;
 function mainLoop(time_now) {
-    Postprocessing.BeginDrawing();
+    if(enablePostprocessing) Postprocessing.BeginDrawing();
+    else gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
     let deltaTime = 0.001 * (time_now - time_last);
     time_last = time_now;
@@ -44,6 +45,6 @@ function mainLoop(time_now) {
     earth.draw();
     tchPlanet.DisableAttributes();   
     
-    Postprocessing.EndDrawing();
+    if(enablePostprocessing) Postprocessing.EndDrawing();
     requestAnimationFrame(mainLoop);
 }

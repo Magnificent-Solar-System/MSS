@@ -5,8 +5,11 @@ const fov = 1.2;
 
 /* RENDER TARGET */
 
-const targetTextureWidth = 800;
-const targetTextureHeight = 600;
+const rtAspectRatio = 1.85 / 1.0;
+const targetTextureHeight = 1000;
+
+const targetTextureWidth = rtAspectRatio * targetTextureHeight;
+
 
 /* SHIP */
 
@@ -18,4 +21,4 @@ var moveSpeed = 0.05;
 
 const planetParallels = 128;
 const planetMeridians = 128;
-const SunColor = new vec4(1, 1, 0, 1);
+const SunColor = new vec4(10, 10, 0, 1);

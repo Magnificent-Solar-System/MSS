@@ -22,7 +22,7 @@ window.onmousemove = function (e) {
 
 window.onkeydown = function(e) {
     if(e.code == 'Space') {
-        console.log(camera);
+        enablePostprocessing = !enablePostprocessing;
     }
     if (e.code == 'KeyW') {
         camera.position = camera.position.add(camera.forward.mul(moveSpeed));
