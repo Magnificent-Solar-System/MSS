@@ -10,19 +10,26 @@ function mainLoop(time_now) {
     time_last = time_now;
 
     camera.update();
-    let matrix = new mat4(); 
-    matrix.copy(camera.viewMatrix);
-    matrix.mul(Postprocessing.projectionMatrix);
+    let vp = new mat4(); 
+    mat4.Multiply(vp, camera.viewMatrix,  Postprocessing.projectionMatrix);
+    let w = new mat4();
     
     //draw sun
-    tchStar.Use(matrix, SunColor);
+    mat4.Translation(w, sun.position);
+    let m = new mat4();
+    mat4.Multiply(m, w, vp);
+
+    tchStar.Use(m, SunColor);
     sun.bindArrayBuffer();
     tchStar.SetupAttributes();
     sun.draw();
     tchStar.DisableAttributes();   
     
     //draw earth
-    tchPlanet.Use(matrix, sun.position.add(new vec3(3, 3, -1)));
+    mat4.Translation(w, earth.position);
+    mat4.Multiply(m, w, vp);
+
+    tchPlanet.Use(m, sun.position.add(new vec3(3, 3, -1)));
     earth.bindArrayBuffer();
     tchPlanet.SetupAttributes();
     earth.draw();
