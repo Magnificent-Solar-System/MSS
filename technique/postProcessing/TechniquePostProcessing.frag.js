@@ -9,6 +9,7 @@ out vec4 fragColor;
 
 void main(){
     vec4 cl = texture(uSampler, fTexCoords);
+    if(cl.r > 1.0) cl.b = cl.r - 1.0; //hdr test
     fragColor = cl;
 }
 `

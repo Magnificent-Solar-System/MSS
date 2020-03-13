@@ -3,6 +3,7 @@ var tchPlanet = new TechniquePlanet();
 var tchPostProcessing = new TechniquePostProcessing();
 var tchPlainColor = new TechniquePlainColor();
 var tchStar = new TechniqueStar();
+var tchEarth = new TechniqueEarth();
 
 Postprocessing.Initialize(tchPostProcessing);
 

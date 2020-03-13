@@ -9,7 +9,7 @@ uniform vec4 uLightColor;
 out vec4 fragColor;
 
 void main(){
-    fragColor = uLightColor;
+    fragColor = uLightColor * 2.0;
     //fragColor = texture(uSampler, fTexCoords) * uLightColor;
 }
 `
