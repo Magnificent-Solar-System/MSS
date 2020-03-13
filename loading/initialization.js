@@ -13,6 +13,6 @@ gl.enable(gl.CULL_FACE);
 gl.cullFace(gl.BACK);
 gl.clearDepth(0);
 gl.clearColor(0, 0, 0, 1);
-gl.getExtension("EXT_color_buffer_float")
+gl.getExtension("EXT_color_buffer_float");
 
 Technique.Initialize();
