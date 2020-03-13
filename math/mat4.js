@@ -92,26 +92,6 @@ class mat4 {
         this.m[10] *= v.z;
     }
     
-    /* multiplies this matrix on another matrix (result is saved in this matrix)*/
-    mul(r) {
-        //err, edited this.m[0] used  in multiplication - wrong
-        this.m[0] = this.m[0] * r.m[0] + this.m[1] * r.m[4] + this.m[2] * r.m[8] + this.m[3] * r.m[12];
-        this.m[1] = this.m[0] * r.m[1] + this.m[1] * r.m[5] + this.m[2] * r.m[9] + this.m[3] * r.m[13];
-        this.m[2] = this.m[0] * r.m[2] + this.m[1] * r.m[6] + this.m[2] * r.m[10] + this.m[3] * r.m[14];
-        this.m[3] = this.m[0] * r.m[3] + this.m[1] * r.m[7] + this.m[2] * r.m[11] + this.m[3] * r.m[15];
-        this.m[4] = this.m[4] * r.m[0] + this.m[5] * r.m[4] + this.m[6] * r.m[8] + this.m[7] * r.m[12];
-        this.m[5] = this.m[4] * r.m[1] + this.m[5] * r.m[5] + this.m[6] * r.m[9] + this.m[7] * r.m[13];
-        this.m[6] = this.m[4] * r.m[2] + this.m[5] * r.m[6] + this.m[6] * r.m[10] + this.m[7] * r.m[14];
-        this.m[7] = this.m[4] * r.m[3] + this.m[5] * r.m[7] + this.m[6] * r.m[11] + this.m[7] * r.m[15];
-        this.m[8] = this.m[8] * r.m[0] + this.m[9] * r.m[4] + this.m[10] * r.m[8] + this.m[11] * r.m[12];
-        this.m[9] = this.m[8] * r.m[1] + this.m[9] * r.m[5] + this.m[10] * r.m[9] + this.m[11] * r.m[13];
-        this.m[10] = this.m[8] * r.m[2] + this.m[9] * r.m[6] + this.m[10] * r.m[10] + this.m[11] * r.m[14];
-        this.m[11] = this.m[8] * r.m[3] + this.m[9] * r.m[7] + this.m[10] * r.m[11] + this.m[11] * r.m[15];
-        this.m[12] = this.m[12] * r.m[0] + this.m[13] * r.m[4] + this.m[14] * r.m[8] + this.m[15] * r.m[12];
-        this.m[13] = this.m[12] * r.m[1] + this.m[13] * r.m[5] + this.m[14] * r.m[9] + this.m[15] * r.m[13];
-        this.m[14] = this.m[12] * r.m[2] + this.m[13] * r.m[6] + this.m[14] * r.m[10] + this.m[15] * r.m[14];
-        this.m[15] = this.m[12] * r.m[3] + this.m[13] * r.m[7] + this.m[14] * r.m[11] + this.m[15] * r.m[15]; 
-    }
     /* multiplies vector on matrix (vec with w = 1 (point)) */
     transform(v) {
         let resX = v.x * this.m[0] + v.y * this.m[4] + v.z * this.m[8] + /*w * */ this.m[12];
