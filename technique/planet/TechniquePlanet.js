@@ -4,7 +4,8 @@ class TechniquePlanet extends Technique {
         super.AddShader(gl.FRAGMENT_SHADER, tchPlanet_frag);
         super.AddShader(gl.VERTEX_SHADER, tchPlanet_vert);
         super.Link();
-        this.locationMatrix = super.GetUniformLocation("uMatrix");
+        this.locationWorldMatrix = super.GetUniformLocation("uWorldMatrix");
+        this.locationViewProjectionMatrix = super.GetUniformLocation("uViewProjectionMatrix");
         this.locationSunPosition = super.GetUniformLocation("uSunPosition");
         
         super.InitializeAttributes(
@@ -13,9 +14,10 @@ class TechniquePlanet extends Technique {
             ["vNormal", 3, gl.FLOAT ]
         );
     }
-    Use(matrix, sunPosition) {
+    Use(matrixWorld, matrixVP, sunPosition) {
         super.Use();
-        gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
+        gl.uniformMatrix4fv(this.locationWorldMatrix, false, matrixWorld.m);
+        gl.uniformMatrix4fv(this.locationViewProjectionMatrix, false, matrixVP.m);
         gl.uniform3f(this.locationSunPosition, sunPosition.x, sunPosition.y, sunPosition.z);
     }
 }

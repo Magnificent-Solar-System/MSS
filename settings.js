@@ -1,6 +1,6 @@
 /* PROJECTION MATRIX */
-const zNearPlane = 0.01;
-const zFarPlane = 100.0;
+const zNearPlane = 0.1;
+const zFarPlane = 1000.0;
 const fov = 1.2;
 
 /* RENDER TARGET */
