@@ -5,7 +5,7 @@ canvas.height = document.body.clientHeight; //document.height is obsolete
 canvasW = canvas.width;
 canvasH = canvas.height;
 
-gl = canvas.getContext("webgl2");  
+gl = canvas.getContext("webgl2", { antialias: false });  
 gl.frontFace(gl.CW);
 gl.enable(gl.DEPTH_TEST);
 gl.depthFunc(gl.GEQUAL);
