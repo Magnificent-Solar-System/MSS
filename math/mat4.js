@@ -94,6 +94,7 @@ class mat4 {
     
     /* multiplies this matrix on another matrix (result is saved in this matrix)*/
     mul(r) {
+        //err, edited this.m[0] used  in multiplication - wrong
         this.m[0] = this.m[0] * r.m[0] + this.m[1] * r.m[4] + this.m[2] * r.m[8] + this.m[3] * r.m[12];
         this.m[1] = this.m[0] * r.m[1] + this.m[1] * r.m[5] + this.m[2] * r.m[9] + this.m[3] * r.m[13];
         this.m[2] = this.m[0] * r.m[2] + this.m[1] * r.m[6] + this.m[2] * r.m[10] + this.m[3] * r.m[14];
@@ -317,5 +318,23 @@ class mat4 {
         m.m[13] = -nUp.dot(eye);
         m.m[14] = -nForward.dot(eye);
         m.m[15] = 1.0;
+    }
+    static Multiply(m, l, r) {
+        m.m[0] = l.m[0] * r.m[0] + l.m[1] * r.m[4] + l.m[2] * r.m[8] + l.m[3] * r.m[12];
+        m.m[1] = l.m[0] * r.m[1] + l.m[1] * r.m[5] + l.m[2] * r.m[9] + l.m[3] * r.m[13];
+        m.m[2] = l.m[0] * r.m[2] + l.m[1] * r.m[6] + l.m[2] * r.m[10] + l.m[3] * r.m[14];
+        m.m[3] = l.m[0] * r.m[3] + l.m[1] * r.m[7] + l.m[2] * r.m[11] + l.m[3] * r.m[15];
+        m.m[4] = l.m[4] * r.m[0] + l.m[5] * r.m[4] + l.m[6] * r.m[8] + l.m[7] * r.m[12];
+        m.m[5] = l.m[4] * r.m[1] + l.m[5] * r.m[5] + l.m[6] * r.m[9] + l.m[7] * r.m[13];
+        m.m[6] = l.m[4] * r.m[2] + l.m[5] * r.m[6] + l.m[6] * r.m[10] + l.m[7] * r.m[14];
+        m.m[7] = l.m[4] * r.m[3] + l.m[5] * r.m[7] + l.m[6] * r.m[11] + l.m[7] * r.m[15];
+        m.m[8] = l.m[8] * r.m[0] + l.m[9] * r.m[4] + l.m[10] * r.m[8] + l.m[11] * r.m[12];
+        m.m[9] = l.m[8] * r.m[1] + l.m[9] * r.m[5] + l.m[10] * r.m[9] + l.m[11] * r.m[13];
+        m.m[10] = l.m[8] * r.m[2] + l.m[9] * r.m[6] + l.m[10] * r.m[10] + l.m[11] * r.m[14];
+        m.m[11] = l.m[8] * r.m[3] + l.m[9] * r.m[7] + l.m[10] * r.m[11] + l.m[11] * r.m[15];
+        m.m[12] = l.m[12] * r.m[0] + l.m[13] * r.m[4] + l.m[14] * r.m[8] + l.m[15] * r.m[12];
+        m.m[13] = l.m[12] * r.m[1] + l.m[13] * r.m[5] + l.m[14] * r.m[9] + l.m[15] * r.m[13];
+        m.m[14] = l.m[12] * r.m[2] + l.m[13] * r.m[6] + l.m[14] * r.m[10] + l.m[15] * r.m[14];
+        m.m[15] = l.m[12] * r.m[3] + l.m[13] * r.m[7] + l.m[14] * r.m[11] + l.m[15] * r.m[15];
     }
 }
