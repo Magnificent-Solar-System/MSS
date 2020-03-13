@@ -15,20 +15,14 @@ function mainLoop(time_now) {
     matrix.mul(Postprocessing.projectionMatrix);
     
     //draw sun
-    mat4.Translation(sun.worldMatrix, sun.position);
-    let mm = new mat4();
-    mm.copy(sun.worldMatrix);
-    mm.mul(matrix);
-    tchStar.Use(mm, SunColor);
+    tchStar.Use(matrix, SunColor);
     sun.bindArrayBuffer();
     tchStar.SetupAttributes();
     sun.draw();
     tchStar.DisableAttributes();   
     
     //draw earth
-    mat4.Translation(earth.worldMatrix, earth.position);
-    earth.worldMatrix.mul(matrix);
-    tchPlanet.Use(earth.worldMatrix, sun.position);
+    tchPlanet.Use(matrix, sun.position.add(new vec3(3, 3, -1)));
     earth.bindArrayBuffer();
     tchPlanet.SetupAttributes();
     earth.draw();
