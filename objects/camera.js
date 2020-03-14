@@ -11,7 +11,7 @@ class Camera {
         return this.viewMatrix.right;
     }
     update() {
-        mat4.LookAt(this.viewMatrix, this.position, this.position.add(this.forward), this.up);
+        mat4.LookAt(this.viewMatrix, this.position, vec3.add(this.position, this.forward), this.up);
     }
     rotateX(dAngX) {
         mat4.RotationX(this.rotationMatrix, dAngX); 

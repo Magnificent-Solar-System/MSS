@@ -37,20 +37,20 @@ function mainLoop(time_now) {
     let F = [vec3.zero(), vec3.zero(), vec3.zero(), vec3.zero(), vec3.zero(), vec3.zero(), vec3.zero(), vec3.zero()];
     for(let i = 0; i < 7; i++) {
         for(let j = i + 1; j < 8; j++) {
-            let dF = planets[i].position.sub(planets[j].position);
+            let dF = vec3.sub(planets[i].position, planets[j].position);
             let mF = planets[i].mass * planets[j].mass * G / (dF.sqrlen);
             dF = vec3.norm(dF);
-            F[i] = F[i].add(dF.mul(-mF));
-            F[j] = F[j].add(dF.mul(mF));
+            F[i] = vec3.add(F[i], vec3.mulvs(dF, -mF));
+            F[j] = vec3.add(F[j], vec3.mulvs(dF, mF));
         }
     }
     for(let i = 0; i < 8; i++) {
         let sqrR = planets[i].position.sqrlen;
-        let dir = planets[i].position.inv().norm();
-        F[i] = F[i].add( dir.mul(G * planets[i].mass * SunMass / sqrR) );
+        let dir = vec3.norm(vec3.inv(planets[i].position));
+        F[i] = vec3.add(F[i], vec3.mulvs(dir, G * planets[i].mass * SunMass / sqrR) );
         
-        planets[i].velocity = planets[i].velocity.add(F[i].div(planets[i].mass).mul(deltaTime));
-        planets[i].position = planets[i].position.add(planets[i].velocity.mul(deltaTime));
+        planets[i].velocity = vec3.add( planets[i].velocity, vec3.mulvs(vec3.divvs(F[i], planets[i].mass), deltaTime));
+        planets[i].position = vec3.add( planets[i].position, vec3.mulvs(planets[i].velocity, deltaTime));
     }
     //planets-draw
     tchPlanet.Use(vp, sun.position , 1);

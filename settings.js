@@ -26,7 +26,7 @@ const tmp2 = 1e2;
 function startVel(pos) {
     let vel = Math.sqrt(G*SunMass/pos.length);
     let v = vec3.cross(vec3.unitY(), vec3.norm(pos));
-    return v.mul(vel);
+    return vec3.mulvs(v, vel);
 }
 
 

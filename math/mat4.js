@@ -279,9 +279,9 @@ class mat4 {
         return m;  
     }
     static LookAt(m, eye, trg, up) {
-        let nForward = vec3.norm(eye.sub(trg));
-        let nRight = vec3.norm(up.cross(nForward));
-        let nUp = nForward.cross(nRight);
+        let nForward = vec3.norm(vec3.sub(eye, trg));
+        let nRight = vec3.norm(vec3.cross(up, nForward));
+        let nUp = vec3.cross(nForward, nRight);
         m.m[0] = nRight.x;
         m.m[1] = nUp.x;
         m.m[2] = nForward.x;
@@ -294,9 +294,9 @@ class mat4 {
         m.m[9] = nUp.z;
         m.m[10] = nForward.z;
         m.m[11] = 0;
-        m.m[12] = -nRight.dot(eye);
-        m.m[13] = -nUp.dot(eye);
-        m.m[14] = -nForward.dot(eye);
+        m.m[12] = -vec3.dot(nRight, eye);
+        m.m[13] = -vec3.dot(nUp, eye);
+        m.m[14] = -vec3.dot(nForward, eye);
         m.m[15] = 1.0;
     }
     static Multiply(m, l, r) {
