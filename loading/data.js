@@ -20,12 +20,12 @@ function loadTexture(src , n){
     }
     singleTexture.image.crossOrigin = "anonymous";
     singleTexture.image.src = src;
-    return  [singleTexture,n];
+    return  singleTexture;
 }
 
 
 
-sun = new Body(new vec3(0, 0, 0), new vec3(0, 0, 0), SunMass, 50.0 , true , true , loadTexture("https://i.ibb.co/vXnRgh6/sun.jpg" , 0));
+sun = new Body(new vec3(0, 0, 0), new vec3(0, 0, 0), SunMass, 50.0 , true , true , loadTexture("https://i.ibb.co/vXnRgh6/sun.jpg"));
 
 const MERCURY   = 0;
 const VENUS     = 1;

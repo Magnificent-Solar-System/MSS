@@ -31,10 +31,9 @@ function mainLoop(time_now) {
     quat.toMatrix(rotMat);
     //mat4.Translation(w, sun.position);
     mat4.Multiply(m, rotMat, vp);
-    
     tchStar.Use(m, SunColor, 0);
     sun.bindArrayBuffer();
-    tchStar.SetupAttributes();
+    tchStar.SetupAttributes(sun.tex);
     sun.draw();
     tchStar.DisableAttributes();   
     

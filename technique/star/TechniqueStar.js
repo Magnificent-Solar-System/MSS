@@ -14,10 +14,10 @@ class TechniqueStar extends Technique {
             ["vNormal", 3, gl.FLOAT ]
         );
     }
-    Use(matrix, lightColor , n) {
+    Use(matrix, lightColor ) {
         super.Use();
         gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
         gl.uniform4f(this.locationLightColor, lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-        gl.uniform1i(this.uSampler , n);
+        gl.uniform1i(this.uSampler, 0);
     }
 }
