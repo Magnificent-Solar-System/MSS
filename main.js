@@ -21,13 +21,18 @@ function mainLoop(time_now) {
     let w = new mat4();
     let m = new mat4();
     mat4.Multiply(vp, camera.viewMatrix,  Postprocessing.projectionMatrix);
-
+    
     
     //draw sun
-    mat4.Translation(w, sun.position);
-    mat4.Multiply(m, w, vp);
 
-    tchStar.Use(m, SunColor , 0);
+    //testing quats on sun
+    let quat = Quaternion.FromAxisAngle(new vec3(0, 0, 1), t);
+    let rotMat = new mat4();
+    quat.toMatrix(rotMat);
+    //mat4.Translation(w, sun.position);
+    mat4.Multiply(m, rotMat, vp);
+    
+    tchStar.Use(m, SunColor, 0);
     sun.bindArrayBuffer();
     tchStar.SetupAttributes();
     sun.draw();
