@@ -3,7 +3,6 @@ uniform mat4 uMatrix;
 
 in vec3 vPosition;
 in vec2 vTexCoords;
-//in vec3 vNormal;
 
 out vec2 fTexCoords;
 

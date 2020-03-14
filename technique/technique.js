@@ -47,12 +47,8 @@ class Technique {
         }
         this.stride = offset;
     }
-    /* enables and sets pointers for attributes. format: [compN, type, size] */
-    SetupAttributes(texture) {
-        if(texture){
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-        }
+    
+    SetupAttributes() {
         for(let i = 0; i < this.attribLocations.length; i++) {
             gl.enableVertexAttribArray(this.attribLocations[i]); 
             gl.vertexAttribPointer(this.attribLocations[i], this.attribInfo[i][0], this.attribInfo[i][1], this.attribInfo[i][2], this.stride, this.attribInfo[i][3]);

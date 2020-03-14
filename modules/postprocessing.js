@@ -7,7 +7,9 @@ class Postprocessing {
     
     static Initialize(techniquePostProcessing) {
         this.technique = techniquePostProcessing;
-        this.projectionMatrix = new mat4();
+        
+        this.targetTextureWidth = canvas.width;
+        this.targetTextureHeight = canvas.height;
         
         this.vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
@@ -20,7 +22,7 @@ class Postprocessing {
         
         this.targetTexture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, this.targetTexture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, targetTextureWidth, targetTextureHeight, 0, gl.RGBA, gl.FLOAT, null);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, this.targetTextureWidth, this.targetTextureHeight, 0, gl.RGBA, gl.FLOAT, null);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -28,7 +30,7 @@ class Postprocessing {
         
         this.depthTexture = gl.createTexture();
          gl.bindTexture(gl.TEXTURE_2D, this.depthTexture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT16, targetTextureWidth, targetTextureHeight, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_SHORT, null);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT16, this.targetTextureWidth, this.targetTextureHeight, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_SHORT, null);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
         gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -43,10 +45,10 @@ class Postprocessing {
     
     static BeginDrawing() {
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
-        gl.viewport(0, 0, targetTextureWidth, targetTextureHeight);
+        gl.viewport(0, 0, this.targetTextureWidth, this.targetTextureHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        const aspectRatio = targetTextureWidth / targetTextureHeight;
-        mat4.Perspective(this.projectionMatrix, aspectRatio, zNearPlane, zFarPlane, fov);
+        const aspectRatio = this.targetTextureWidth / this.targetTextureHeight;
+        mat4.Perspective(projectionMatrix, aspectRatio, zNearPlane, zFarPlane, fov);
     }
     
     static EndDrawing() {

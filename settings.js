@@ -3,13 +3,6 @@ const zNearPlane = 0.1;
 const zFarPlane = 10000.0;
 var fov = 1.2;
 
-/* RENDER TARGET */
-
-const rtAspectRatio = 1.85 / 1.0;
-const targetTextureHeight = 1000;
-
-const targetTextureWidth = rtAspectRatio * targetTextureHeight;
-
 
 /* SHIP */
 
@@ -38,7 +31,8 @@ var SUN = {
     radius : 50, 
     velocity : vec3.zero(),
     srcTexture0 : "https://i.ibb.co/vXnRgh6/sun.jpg",
-    lightIntensity : new vec4(10, 10, 0, 1)
+    lightIntensity : new vec4(10, 10, 0, 1),
+    separateWorldMatrix : false
 };
 
 var MERCURY = {

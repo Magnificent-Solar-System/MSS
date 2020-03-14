@@ -10,16 +10,20 @@ class TechniqueSun extends Technique {
         
         super.InitializeAttributes(
             ["vPosition", 3, gl.FLOAT ],
-            ["vTexCoords", 2, gl.FLOAT ],
-            ["vNormal", 3, gl.FLOAT ]
+            ["vTexCoords", 2, gl.FLOAT ]
         );
+        this.stride += 3 * 4;
     }
-    Use(matrix) {
-        super.Use();
-        gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
-        gl.uniform4f(this.locationLightIntensity, SUN.lightIntensity.x, SUN.lightIntensity.y, SUN.lightIntensity.z, SUN.lightIntensity.w);
+    SetTextures(texture0) {
         gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, SUN.texture0);
+        gl.bindTexture(gl.TEXTURE_2D, texture0);
         gl.uniform1i(this.uSampler, 0);
+    }
+    SetMatrix(matrix) {
+        gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
+    }
+    Use() {
+        super.Use();
+        gl.uniform4f(this.locationLightIntensity, SUN.lightIntensity.x, SUN.lightIntensity.y, SUN.lightIntensity.z, SUN.lightIntensity.w);
     }
 }
