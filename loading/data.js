@@ -4,10 +4,28 @@ var tchPostProcessing = new TechniquePostProcessing();
 var tchPlainColor = new TechniquePlainColor();
 var tchStar = new TechniqueStar();
 var tchEarth = new TechniqueEarth();
-//var tchSkybox = new TechniqueSkybox( [[skybox texture]] );
 Postprocessing.Initialize(tchPostProcessing);
 
-sun = new Body(new vec3(0, 0, 0), new vec3(0, 0, 0), SunMass, 50.0 , true , true ,true, "https://i.ibb.co/vXnRgh6/sun.jpg" , 0);
+function loadTexture(src , n){
+    let singleTexture = gl.createTexture();
+    singleTexture.image = new Image();
+    singleTexture.image.onload = function(){
+        gl.bindTexture(gl.TEXTURE_2D, singleTexture);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, singleTexture.image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    }
+    singleTexture.image.crossOrigin = "anonymous";
+    singleTexture.image.src = src;
+    return  [singleTexture,n];
+}
+
+
+
+sun = new Body(new vec3(0, 0, 0), new vec3(0, 0, 0), SunMass, 50.0 , true , true , loadTexture("https://i.ibb.co/vXnRgh6/sun.jpg" , 0));
 
 const MERCURY   = 0;
 const VENUS     = 1;
