@@ -1,6 +1,6 @@
 class Body {
     constructor(pos, vel, mass, radius, genTexCoords, genNormales ,tex, src , num) {
-        this.sphere = createSphere(planetParallels, planetMeridians, radius, genTexCoords, genNormales);
+        this.sphere = geomSphere(planetParallels, planetMeridians, radius, genTexCoords, genNormales);
         this.radius = radius;
         this.mass = mass;
         this.velocity = vel;

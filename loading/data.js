@@ -4,6 +4,7 @@ var tchPostProcessing = new TechniquePostProcessing();
 var tchPlainColor = new TechniquePlainColor();
 var tchStar = new TechniqueStar();
 var tchEarth = new TechniqueEarth();
+//var tchSkybox = new TechniqueSkybox( [[skybox texture]] );
 Postprocessing.Initialize(tchPostProcessing);
 
 sun = new Body(new vec3(0, 0, 0), new vec3(0, 0, 0), SunMass, 50.0 , true , true ,true, "https://i.ibb.co/vXnRgh6/sun.jpg" , 0);

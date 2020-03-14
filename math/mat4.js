@@ -26,10 +26,15 @@ class mat4 {
         this.m[15] = 1;
     }   
     
-    getTranslation() {
+    get translation() {
         return new vec3(this.m[12], this.m[13], this.m[14]);
     }
-    getScale() {
+    set translation(v) {
+        this.m[12] = v.x;
+        this.m[13] = v.y;
+        this.m[14] = v.z;
+    }
+    get scale() {
         return new vec3(this.m[0], this.m[5], this.m[10]);
     }
     get right() {

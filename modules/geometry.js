@@ -1,4 +1,4 @@
-function createSphere(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
+function geomSphere(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
     generateNormales = (generateNormales === undefined ? false : generateNormales);
     generateTexCoords = (generateTexCoords === undefined ? false : generateTexCoords);
     let vertices = [];
@@ -24,7 +24,7 @@ function createSphere(parallelsCount, meridiansCount, radius, generateNormales, 
             if(generateNormales) vertices.push(nx, ny, nz);
         }
     }
-    vertexBuffer = gl.createBuffer();
+    let vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW); 
     
@@ -42,6 +42,27 @@ function createSphere(parallelsCount, meridiansCount, radius, generateNormales, 
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
     
     return {
+        "elementCount" : indices.length,
+        "vertexBuffer" : vertexBuffer,
+        "indexBuffer" : indexBuffer,
+    };
+}
+
+function geomCuboid(sizeV, strFormat) {
+    let hS = vec3.mulvs(sizeV, 0.5);
+    strFormat = (strFormat === undefined) ? "v" : strFormat;
+    let data = [];
+    
+    let vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); 
+    
+    let indices = [];
+    
+    indexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+   return {
         "elementCount" : indices.length,
         "vertexBuffer" : vertexBuffer,
         "indexBuffer" : indexBuffer,
