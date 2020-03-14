@@ -101,9 +101,9 @@ class Quaternion {
     static Multiply(q1, q2) {
         return new Quaternion(
             q1.s * q2.s - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z, 
-            q1.s * b.x + q2.s * a.x + q1.y * q2.z - q1.z * q2.y,
-            q1.s * b.y + q2.s * a.y + q1.z * q2.x - q1.x * q2.z,
-            q1.s * b.z + q2.s * a.z + q1.x * q2.y - q1.y * q2.x
+            q1.s * q2.x + q2.s * q1.x + q1.y * q2.z - q1.z * q2.y,
+            q1.s * q2.y + q2.s * q1.y + q1.z * q2.x - q1.x * q2.z,
+            q1.s * q2.z + q2.s * q1.z + q1.x * q2.y - q1.y * q2.x
         );
     }
     /**
@@ -115,9 +115,9 @@ class Quaternion {
     static MultiplyByVector(q, v) {
         return new Quaternion(
             - q.x * v.x - q.y * v.y - q.z * v.z, 
-            q.s * b.x + q.y * v.z - q.z * v.y,
-            q.s * b.y + q.z * v.x - q.x * v.z,
-            q.s * b.z + q.x * v.y - q.y * v.x
+            q.s * v.x + q.y * v.z - q.z * v.y,
+            q.s * v.y + q.z * v.x - q.x * v.z,
+            q.s * v.z + q.x * v.y - q.y * v.x
         );
     }
     /**
@@ -212,5 +212,25 @@ class Quaternion {
         let sinA = Math.sin(halfAngle);
         let cosA = Math.cos(halfAngle);
         return new Quaternion(cosA, axis.x * sinA, axis.y * sinA, axis.z * sinA);
+    }
+    
+    static FromYawPitchRoll(yaw, pitch, roll) 
+    {
+        let hRoll = roll * 0.5; 
+        let hYaw = yaw * 0.5;
+        let hPitch = pitch * 0.5;
+        let sinhR = Math.sin(hRoll);
+        let coshR = Math.cos(hRoll);
+        let sinhP = Math.sin(hPitch);
+        let coshP = Math.cos(hPitch);
+        let sinhY = Math.sin(hYaw);
+        let coshY = Math.cos(hYaw);
+
+        return new Quaternion(
+            ((coshY * coshP) * coshR) + ((sinhY * sinhP) * sinhR),
+            ((coshY * sinhP) * coshR) + ((sinhY * coshP) * sinhR),
+            ((sinhY * coshP) * coshR) - ((coshY * sinhP) * sinhR),
+            ((coshY * coshP) * sinhR) - ((sinhY * sinhP) * coshR)
+        );
     }
 }

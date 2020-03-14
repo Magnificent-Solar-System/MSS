@@ -1,4 +1,4 @@
-camera = new Camera(new vec3(100, 120, -100), new vec3(-100, -120, 100), vec3.unitY());
+camera = new Camera(new vec3(40, 40, -40), 0, 0, 0);
 
 requestAnimationFrame(mainLoop);
 

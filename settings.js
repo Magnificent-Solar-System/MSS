@@ -14,7 +14,7 @@ const targetTextureWidth = rtAspectRatio * targetTextureHeight;
 /* SHIP */
 
 var rotationSpeed = 1.2;
-var moveSpeed = 0.05;
+var moveSpeed = 0.1;
 
 
 /* ASTRONOMY */

@@ -1,30 +1,20 @@
 class Camera {
-    constructor(pos, forward, up) {
+    constructor(pos, yaw, pitch, roll) {
         this.position = pos;
-        this.forward = vec3.norm(forward);
-        this.up = vec3.norm(up);
         this.viewMatrix = new mat4();
-        this.rotationMatrix = new mat4();
+        this.yaw = (yaw === undefined) ? 0.0 : yaw;
+        this.pitch = (pitch === undefined) ? 0.0 : pitch;
+        this.roll = (roll === undefined) ? 0.0 : roll;
         this.update();
     }
-    get right() {
-        return this.viewMatrix.right;
-    }
     update() {
-        mat4.LookAt(this.viewMatrix, this.position, vec3.add(this.position, this.forward), this.up);
-    }
-    rotateX(dAngX) {
-        mat4.RotationX(this.rotationMatrix, dAngX); 
-        this.forward = this.rotationMatrix.transformDirection(this.forward);
-        //this.up = this.rotationMatrix.transformDirection(this.up);
-    }
-    rotateY(dAngY) {
-        mat4.RotationY(this.rotationMatrix, dAngY); 
-        this.forward = this.rotationMatrix.transformDirection(this.forward);
-        //this.up = this.rotationMatrix.transformDirection(this.up);
-    }
-    setPosition(pos) {
-        this.position = pos; 
+        let quat = Quaternion.FromYawPitchRoll(this.yaw, this.pitch, this.roll);
+        
+        this.xAxis = quat.transform(vec3.unitX());
+        this.yAxis = quat.transform(vec3.unitY());
+        this.zAxis = quat.transform(vec3.unitZ());
+        
+        mat4.LookAt(this.viewMatrix, this.position, vec3.add(this.position, this.zAxis), this.yAxis);
     }
     
 }
