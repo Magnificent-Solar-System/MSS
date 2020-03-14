@@ -4,7 +4,8 @@ class TechniqueEarth extends Technique {
         super.AddShader(gl.FRAGMENT_SHADER, tchEarth_frag);
         super.AddShader(gl.VERTEX_SHADER, tchEarth_vert);
         super.Link();
-        this.locationMatrix = super.GetUniformLocation("uMatrix");
+        this.locationWorldMatrix = super.GetUniformLocation("uWorldMatrix");
+        this.locationViewProjectionMatrix = super.GetUniformLocation("uViewProjectionMatrix");
         this.locationSunPosition = super.GetUniformLocation("uSunPosition");
         this.locationSamplerDay = super.GetUniformLocation("uSamplerDay");
         this.locationSamplerNight = super.GetUniformLocation("uSamplerNight");
@@ -15,9 +16,10 @@ class TechniqueEarth extends Technique {
             ["vNormal", 3, gl.FLOAT ]
         );
     }
-    Use(matrix, sunPosition, textureDay, textureNight) {
+    Use(worldmatrix,viewProjectionMatrix, sunPosition, textureDay, textureNight) {
         super.Use();
-        gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
+        gl.uniformMatrix4fv(this.locationWorldMatrix, false, worldmatrix.m);
+        gl.uniformMatrix4fv(this.locationViewProjectionMatrix, false,viewProjectionMatrix.m);
         gl.uniform3f(this.locationSunPosition, sunPosition.x, sunPosition.y, sunPosition.z);
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, textureDay);
@@ -26,4 +28,5 @@ class TechniqueEarth extends Technique {
         gl.bindTexture(gl.TEXTURE_2D, textureNight);
         gl.uniform1i(this.locationSamplerNight, 1);
     }
+    
 }

@@ -1,4 +1,4 @@
-camera = new Camera(new vec3(500,0, -200), 0, 0, 0);
+camera = new Camera(new vec3(0,50, -50), 0, 0, 0);
 
 requestAnimationFrame(mainLoop);
 
@@ -31,14 +31,15 @@ function mainLoop(time_now) {
     quat.toMatrix(rotMat);
     //mat4.Translation(w, sun.position);
     mat4.Multiply(m, rotMat, vp);
-    tchStar.Use(m, SunColor, );
+    tchStar.Use(m, SunColor );
     sun.bindArrayBuffer();
     tchStar.SetupAttributes(sun.tex);
     sun.draw();
     tchStar.DisableAttributes(); 
 
     //draw earth
-    tchEarth.Use(m, SunColor, earth.tex[0] , earth.tex[1]);
+    mat4.Translation(w, earth.position);
+    tchEarth.Use(w,vp,sun.position, earth.tex[0] , earth.tex[1]);
     earth.bindArrayBuffer();
     tchEarth.SetupAttributes();
     earth.draw();

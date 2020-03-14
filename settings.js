@@ -45,7 +45,7 @@ const VENUS_RADIUS = 5;
 const VENUS_VELOCITY = startVel(VENUS_POSITION);
 
 const EARTH_MASS = tmp2;
-const EARTH_POSITION = new vec3(0, tmp, 0);
+const EARTH_POSITION = new vec3(0, 70, 0);
 const EARTH_RADIUS = 7;
 const EARTH_VELOCITY = startVel(EARTH_POSITION);
 

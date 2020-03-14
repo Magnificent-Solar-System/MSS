@@ -1,6 +1,7 @@
 var tchEarth_vert = `
 uniform vec3 uSunPosition;
-uniform mat4 uMatrix;
+uniform mat4 uWorldMatrix;
+uniform mat4 uViewProjectionMatrix;
 
 in vec3 vPosition;
 in vec2 vTexCoords;
@@ -11,8 +12,11 @@ out vec2 fTexCoords;
 
 void main() {
     //consider using abs(...)
-    fLight = dot(vNormal, normalize(uSunPosition - vPosition));
+    vec4 worldPositionC = uWorldMatrix * vec4(vPosition, 1.0);
+    vec3 worldPosition = worldPositionC.xyz / worldPositionC.w;
+    fLight = dot(vNormal, normalize(uSunPosition - worldPosition));
     fTexCoords = vTexCoords;
-    gl_Position = uMatrix * vec4(vPosition, 1.0);
+    gl_Position = uViewProjectionMatrix * worldPositionC;
+    
 }
 `
