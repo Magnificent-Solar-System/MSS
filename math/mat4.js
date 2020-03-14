@@ -131,11 +131,10 @@ class mat4 {
         this.m[15] = m.m[15];
     }
     
-    /* creates world matrix (scale * rotation * translation (left to right)) */
-    static World(m, scaleMatrix, rotationMatrix, translationMatrix) {
-        m.copy(scaleMatrix);
-        m.mul(rotationMatrix);
-        m.mul(translationMatrix);
+    static World(m, scale, translation, rotation) {
+        let tmp = new mat4();
+        mat4.Multiply(tmp, scale, rotation);
+        mat4.Multiply(m, tmp, translation);
     }
     
     static Identity(m) {

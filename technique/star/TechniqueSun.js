@@ -1,11 +1,11 @@
-class TechniqueStar extends Technique {
+class TechniqueSun extends Technique {
     constructor() {
         super();
-        super.AddShader(gl.FRAGMENT_SHADER, tchStar_frag);
-        super.AddShader(gl.VERTEX_SHADER, tchStar_vert);
+        super.AddShader(gl.FRAGMENT_SHADER, tchSun_frag);
+        super.AddShader(gl.VERTEX_SHADER, tchSun_vert);
         super.Link();
         this.locationMatrix = super.GetUniformLocation("uMatrix");
-        this.locationLightColor = super.GetUniformLocation("uLightColor");
+        this.locationLightIntensity = super.GetUniformLocation("uLightColor");
         this.uSampler = super.GetUniformLocation("uSampler");
         
         super.InitializeAttributes(
@@ -14,10 +14,12 @@ class TechniqueStar extends Technique {
             ["vNormal", 3, gl.FLOAT ]
         );
     }
-    Use(matrix, lightColor ) {
+    Use(matrix) {
         super.Use();
         gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
-        gl.uniform4f(this.locationLightColor, lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+        gl.uniform4f(this.locationLightIntensity, SUN.lightIntensity.x, SUN.lightIntensity.y, SUN.lightIntensity.z, SUN.lightIntensity.w);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, SUN.texture0);
         gl.uniform1i(this.uSampler, 0);
     }
 }

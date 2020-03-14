@@ -21,6 +21,8 @@ window.onmousemove = function (e) {
 }
 
 window.onkeydown = function(e) {
+    if(e.code == 'KeyQ') fov += 0.03;
+    if(e.code == 'KeyE') fov -= 0.03;
     if(e.code == 'Space') {
         enablePostprocessing = !enablePostprocessing;
     }

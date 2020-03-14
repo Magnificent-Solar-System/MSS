@@ -48,16 +48,37 @@ function geomSphere(parallelsCount, meridiansCount, radius, generateNormales, ge
     };
 }
 
-function geomCuboid(sizeV, strFormat) {
+function geomCuboid(sizeV) {
     let hS = vec3.mulvs(sizeV, 0.5);
-    strFormat = (strFormat === undefined) ? "v" : strFormat;
-    let data = [];
+    let data = new Array(8);
+    data[0] = new vec3( -hS.x, +hS.y, +hS.z );
+    data[1] = new vec3( +hS.x, +hS.y, +hS.z );
+    data[2] = new vec3( +hS.x, -hS.y, +hS.z );
+    data[3] = new vec3( -hS.x, -hS.y, +hS.z );
+    data[4] = new vec3( -hS.x, -hS.y, -hS.z );
+    data[5] = new vec3( +hS.x, -hS.y, -hS.z );
+    data[6] = new vec3( +hS.x, +hS.y, -hS.z );
+    data[7] = new vec3( -hS.x, +hS.y, -hS.z );
+    
     
     let vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); 
     
-    let indices = [];
+    let indices = [
+        0, 1, 3, //Front
+        1, 2, 3, //
+        1, 6, 2, //Right
+        6, 5, 2, //
+        0, 7, 6, //Up
+        6, 1, 0, //
+        3, 2, 5, //Down
+        5, 4, 3, //
+        7, 0, 3, //Left
+        7, 3, 4, //
+        7, 4, 5, //Back
+        7, 5, 6  // 
+    ];
     
     indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);

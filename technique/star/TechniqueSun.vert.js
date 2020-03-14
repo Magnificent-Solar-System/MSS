@@ -1,4 +1,4 @@
-var tchStar_vert = `
+var tchSun_vert = `
 uniform mat4 uMatrix;
 
 in vec3 vPosition;

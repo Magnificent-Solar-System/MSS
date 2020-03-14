@@ -15,13 +15,19 @@ class TechniquePlanet extends Technique {
             ["vNormal", 3, gl.FLOAT ]
         );
     }
-    Use(matrixVP, sunPosition ) {
-        super.Use();
-        gl.uniformMatrix4fv(this.locationViewProjectionMatrix, false, matrixVP.m);
-        gl.uniform3f(this.locationSunPosition, sunPosition.x, sunPosition.y, sunPosition.z);
-        gl.uniform1i(this.uSampler , 0);
+    SetTextures(texture0) {
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, texture0);
+        gl.uniform1i(this.uSampler, 0);
     }
-    SetWorldMatrix(matrixWorld) {
-        gl.uniformMatrix4fv(this.locationWorldMatrix, false, matrixWorld.m);
+    SetWorldMatrix(worldMatrix) {
+        gl.uniformMatrix4fv(this.locationWorldMatrix, false, worldMatrix.m);
+    }
+    SetViewProjectionMatrix(viewProjectionMatrix) {
+        gl.uniformMatrix4fv(this.locationViewProjectionMatrix, false, viewProjectionMatrix.m);
+    }
+    Use() {
+        super.Use();
+        gl.uniform3f(this.locationSunPosition, SUN.position.x, SUN.position.y, SUN.position.z);
     }
 }

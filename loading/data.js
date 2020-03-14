@@ -1,11 +1,3 @@
-//Techniques
-var tchPlanet = new TechniquePlanet();
-var tchPostProcessing = new TechniquePostProcessing();
-var tchPlainColor = new TechniquePlainColor();
-var tchStar = new TechniqueStar();
-var tchEarth = new TechniqueEarth();
-Postprocessing.Initialize(tchPostProcessing);
-
 function loadTexture(src ){
     let singleTexture = gl.createTexture();
     singleTexture.image = new Image();
@@ -23,33 +15,37 @@ function loadTexture(src ){
     return  singleTexture;
 }
 
+/* TECHNIQUES */
 
+var tchPlanet = new TechniquePlanet();
+var tchPostProcessing = new TechniquePostProcessing();
+var tchSun = new TechniqueSun();
+var tchEarth = new TechniqueEarth();
+Postprocessing.Initialize(tchPostProcessing);
 
-sun = new Body(new vec3(0, 0, 0), new vec3(0, 0, 0), SunMass, 50.0 , true , true , loadTexture("https://i.ibb.co/vXnRgh6/sun.jpg"));
-earth = new Body(EARTH_POSITION, EARTH_VELOCITY, EARTH_MASS, EARTH_RADIUS, true, true, [loadTexture("https://i.ibb.co/c1Cw03Y/earth.jpg"),loadTexture("https://i.ibb.co/WHnwLgj/earth-nightmap.jpg")] );
+/* PLANETS */
 
-const MERCURY   = 0;
-const VENUS     = 1;
-const EARTH     = 2;
-const MARS      = 3;
-const JUPITER   = 4;
-const SATURN    = 5;
-const URANUS    = 6;
-const NEPTUNE   = 7;
+function loadPlanets(...planets) {
+    for(let i = 0; i < planets.length; i++) {
+        if(planets[i].technique === undefined) planets[i].technique = tchPlanet;
+        planets[i].texture0 = loadTexture(planets[i].srcTexture0);
+        if(planets[i].srcTexture1 !== undefined) planets[i].texture1 = loadTexture(planets[i].srcTexture1);
+        if(planets[i].srcTexture2 !== undefined) planets[i].texture2 = loadTexture(planets[i].srcTexture2);
+        
+        //pre-cached matrices
+        planets[i].mat_rotation = new mat4();
+        planets[i].mat_scale = new mat4();
+        planets[i].mat_translation = new mat4();
+        planets[i].mat_world = new mat4();
+        
+        //scale never changes, compute now
+        mat4.Scale(planets[i].mat_scale, vec3.fromScalar(planets[i].radius));
+    }
+}
 
-var planets = [
-    //MERCURY
-    new Body(MERCURY_POSITION, MERCURY_VELOCITY, MERCURY_MASS, MERCURY_RADIUS, true, true,loadTexture("https://i.ibb.co/3FKjhWs/mercury.jpg")), 
-    //VENUS
-    new Body(VENUS_POSITION, VENUS_VELOCITY, VENUS_MASS, VENUS_RADIUS, true, true ,loadTexture("https://i.ibb.co/D5M2ndm/2k-venus-surface.jpg")),  
-    //MARS
-    new Body(MARS_POSITION, MARS_VELOCITY, MARS_MASS, MARS_RADIUS, true, true,loadTexture("https://i.ibb.co/8mTyX3W/2k-mars.jpg")), 
-    //JUPITER
-    new Body(JUPITER_POSITION, JUPITER_VELOCITY, JUPITER_MASS, JUPITER_RADIUS, true, true,loadTexture("https://i.ibb.co/WnJWGt4/2k-jupiter.jpg")), 
-    //SATURN
-    new Body(SATURN_POSITION, SATURN_VELOCITY, SATURN_MASS, SATURN_RADIUS, true, true,loadTexture("https://i.ibb.co/RyKJ7vB/2k-saturn.jpg")), 
-    //URANUS
-    new Body(URANUS_POSITION, URANUS_VELOCITY, URANUS_MASS, URANUS_RADIUS, true, true,loadTexture("https://i.ibb.co/gjBTnKs/2k-uranus.jpg")), 
-    //NEPTUNE
-    new Body(NEPTUNE_POSITION, NEPTUNE_VELOCITY, NEPTUNE_MASS, NEPTUNE_RADIUS, true, true,loadTexture("https://i.ibb.co/54LXC3R/2k-neptune.jpg")), 
-];
+var planetGeometry = geomSphere(planetParallels, planetMeridians, 1.0, true, true);
+
+SUN.technique = tchSun;
+EARTH.technique = tchEarth;
+
+loadPlanets(SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE);
