@@ -7,6 +7,7 @@ class TechniquePlanet extends Technique {
         this.locationWorldMatrix = super.GetUniformLocation("uWorldMatrix");
         this.locationViewProjectionMatrix = super.GetUniformLocation("uViewProjectionMatrix");
         this.locationSunPosition = super.GetUniformLocation("uSunPosition");
+        this.uSampler = super.GetUniformLocation("uSampler");
         
         super.InitializeAttributes(
             ["vPosition", 3, gl.FLOAT ],
@@ -14,10 +15,11 @@ class TechniquePlanet extends Technique {
             ["vNormal", 3, gl.FLOAT ]
         );
     }
-    Use(matrixVP, sunPosition) {
+    Use(matrixVP, sunPosition , n) {
         super.Use();
         gl.uniformMatrix4fv(this.locationViewProjectionMatrix, false, matrixVP.m);
         gl.uniform3f(this.locationSunPosition, sunPosition.x, sunPosition.y, sunPosition.z);
+        gl.uniform1i(this.uSampler , n);
     }
     SetWorldMatrix(matrixWorld) {
         gl.uniformMatrix4fv(this.locationWorldMatrix, false, matrixWorld.m);

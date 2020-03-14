@@ -27,7 +27,7 @@ function mainLoop(time_now) {
     mat4.Translation(w, sun.position);
     mat4.Multiply(m, w, vp);
 
-    tchStar.Use(m, SunColor);
+    tchStar.Use(m, SunColor , 0);
     sun.bindArrayBuffer();
     tchStar.SetupAttributes();
     sun.draw();
@@ -53,7 +53,7 @@ function mainLoop(time_now) {
         planets[i].position = planets[i].position.add(planets[i].velocity.mul(deltaTime));
     }
     //planets-draw
-    tchPlanet.Use(vp, sun.position);
+    tchPlanet.Use(vp, sun.position , 1);
     for(let i = 0; i < 8; i++) {
         mat4.Translation(w, planets[i].position);
         tchPlanet.SetWorldMatrix(w);

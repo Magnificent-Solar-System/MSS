@@ -32,7 +32,9 @@ class Technique {
         this.attribLocations = new Array(info.length);
         this.attribInfo = new Array(info.length);
         let offset = 0;
-        for(let i = 0; i < info.length; ++i) {
+        for(let i = 0; i < info.length; i++) {
+            
+            
             this.attribLocations[i] = this.GetAttribLocation(info[i][0]);
             this.attribInfo[i] = [
                 info[i][1],
@@ -41,12 +43,13 @@ class Technique {
                 offset
             ];
             offset += SIZEOF_TYPE[info[i][2]] * info[i][1];
+
         }
         this.stride = offset;
     }
     /* enables and sets pointers for attributes. format: [compN, type, size] */
     SetupAttributes() {
-        for(let i = 0; i < this.attribLocations.length; ++i) {
+        for(let i = 0; i < this.attribLocations.length; i++) {
             gl.enableVertexAttribArray(this.attribLocations[i]); 
             gl.vertexAttribPointer(this.attribLocations[i], this.attribInfo[i][0], this.attribInfo[i][1], this.attribInfo[i][2], this.stride, this.attribInfo[i][3]);
         }
