@@ -19,7 +19,7 @@ var moveSpeed = 0.1;
 
 /* ASTRONOMY */
 
-const SunMass = 1e17;
+const SunMass = 1e17/10000;
 const tmp = 250;
 const tmp2 = 1e2;
 
