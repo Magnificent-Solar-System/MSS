@@ -1,6 +1,6 @@
 var Skybox = {};
 Skybox.Initialize = function () {
-    Skybox.Cube = geom.CuboidIndexed(new vec3(1, 1, 1));
+    Skybox.Cube = geom.CuboidIndexed(new vec3(1, 1, 1), true);
 }
 Skybox.Draw = function (viewMatrix, projectionMatrix) {
     gl.depthMask(false);
