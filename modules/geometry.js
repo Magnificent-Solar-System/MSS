@@ -60,7 +60,6 @@ function geomCuboid(sizeV) {
     data[6] = new vec3( +hS.x, +hS.y, -hS.z );
     data[7] = new vec3( -hS.x, +hS.y, -hS.z );
     
-    
     let vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); 

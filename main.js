@@ -22,6 +22,8 @@ function mainLoop(time_now) {
     
     camera.update();
       
+    Skybox.Draw(camera.viewMatrix, projectionMatrix);
+    
     gl.bindBuffer(gl.ARRAY_BUFFER, planetGeometry.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
     
