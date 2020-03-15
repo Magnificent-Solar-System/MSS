@@ -79,7 +79,7 @@ function loadPlanets(...planets) {
     }
 }
 
-var planetGeometry = geomSphere(planetParallels, planetMeridians, 1.0, true, true);
+var planetGeometry = geom.Sphere(planetParallels, planetMeridians, 1.0, true, true);
 
 SUN.technique = tchSun;
 EARTH.technique = tchEarth;

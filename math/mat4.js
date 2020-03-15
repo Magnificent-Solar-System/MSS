@@ -274,12 +274,12 @@ class mat4 {
         m.m[7] = 0;
         m.m[8] = 0;
         m.m[9] = 0;
-        m.m[10] = zFar * b;
+        m.m[10] = -(zFar + zNear) * b;
         m.m[11] = -1.0;
         m.m[12] = 0;
         m.m[13] = 0;
-        m.m[14] = (zNear * zFar) * b;
-        m.m[15] = 1;
+        m.m[14] = -2*(zNear * zFar) * b;
+        m.m[15] = 0;
         return m;  
     }
     static LookAt(m, eye, trg, up) {

@@ -23,13 +23,8 @@ class TechniqueSkybox extends Technique {
     Use(viewMatrix, projectionMatrix) {
         super.Use();
         gl.uniformMatrix4fv(this.locationProjectionMatrix, false, projectionMatrix.m);
-        
         this.viewMatrixNotTranslated.copy(viewMatrix);
         this.viewMatrixNotTranslated.translation = vec3.zero();
         gl.uniformMatrix4fv(this.locationViewMatrix, false, this.viewMatrixNotTranslated.m);
-        
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.textureSkybox);
-        gl.uniform1i(this.locationSkybox, 0);
     }
 }

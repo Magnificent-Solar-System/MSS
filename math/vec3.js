@@ -51,7 +51,7 @@ class vec3 {
      * @returns {vec3}
      */
     static inv(v) {
-        return new vec3(v.x, v.y, v.z);
+        return new vec3(-v.x, -v.y, -v.z);
     }
     /**
      * Returns cross product of two vectors.

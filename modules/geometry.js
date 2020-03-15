@@ -1,4 +1,5 @@
-function geomSphere(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
+var geom = {}
+geom.Sphere = function(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
     generateNormales = (generateNormales === undefined ? false : generateNormales);
     generateTexCoords = (generateTexCoords === undefined ? false : generateTexCoords);
     let vertices = [];
@@ -48,36 +49,59 @@ function geomSphere(parallelsCount, meridiansCount, radius, generateNormales, ge
     };
 }
 
-function geomCuboid(sizeV) {
-    let hS = vec3.mulvs(sizeV, 0.5);
-    let data = new Array(8);
-    data[0] = new vec3( -hS.x, +hS.y, +hS.z );
-    data[1] = new vec3( +hS.x, +hS.y, +hS.z );
-    data[2] = new vec3( +hS.x, -hS.y, +hS.z );
-    data[3] = new vec3( -hS.x, -hS.y, +hS.z );
-    data[4] = new vec3( -hS.x, -hS.y, -hS.z );
-    data[5] = new vec3( +hS.x, -hS.y, -hS.z );
-    data[6] = new vec3( +hS.x, +hS.y, -hS.z );
-    data[7] = new vec3( -hS.x, +hS.y, -hS.z );
+geom._cuboid_indices = [
+            0, 1, 3, //Front
+            1, 2, 3, //
+            1, 6, 2, //Right
+            6, 5, 2, //
+            0, 7, 6, //Up
+            6, 1, 0, //
+            3, 2, 5, //Down
+            5, 4, 3, //
+            7, 0, 3, //Left
+            7, 3, 4, //
+            7, 4, 5, //Back
+            7, 5, 6  // 
+        ];
+geom._cuboid_indices_inverted = [
+            3, 1, 0, //Front
+            3, 2, 1, //
+            2, 6, 1, //Right
+            2, 5, 6, //
+            6, 7, 0, //Up
+            0, 1, 6, //
+            5, 2, 3, //Down
+            3, 4, 5, //
+            3, 0, 7, //Left
+            4, 3, 7, //
+            5, 4, 7, //Back
+            6, 5, 7  // 
+        ];
+
+
+geom.CuboidIndexed = function(sizeV, inside) {
     
+    let hS = vec3.mulvs(sizeV, 0.5);
+    let data = [
+        -hS.x, +hS.y, +hS.z,
+        +hS.x, +hS.y, +hS.z,
+        +hS.x, -hS.y, +hS.z,
+        -hS.x, -hS.y, +hS.z,
+        -hS.x, -hS.y, -hS.z,
+        +hS.x, -hS.y, -hS.z,
+        +hS.x, +hS.y, -hS.z,
+        -hS.x, +hS.y, -hS.z
+    ];
     let vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); 
     
-    let indices = [
-        0, 1, 3, //Front
-        1, 2, 3, //
-        1, 6, 2, //Right
-        6, 5, 2, //
-        0, 7, 6, //Up
-        6, 1, 0, //
-        3, 2, 5, //Down
-        5, 4, 3, //
-        7, 0, 3, //Left
-        7, 3, 4, //
-        7, 4, 5, //Back
-        7, 5, 6  // 
-    ];
+    var indices;
+    
+    if(inside)
+        indices = geom._cuboid_indices_inverted;
+    else
+        indices = geom._cuboid_indices;
     
     indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);

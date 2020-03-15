@@ -21,18 +21,16 @@ function mainLoop(time_now) {
     t += deltaTime;
     
     camera.update();
-      
-    Skybox.Draw(camera.viewMatrix, projectionMatrix);
+    let viewProjectionMatrix = new mat4();
+    mat4.Multiply(viewProjectionMatrix, camera.viewMatrix, projectionMatrix);
     
     gl.bindBuffer(gl.ARRAY_BUFFER, planetGeometry.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
     
-    let viewProjectionMatrix = new mat4();
-    mat4.Multiply(viewProjectionMatrix, camera.viewMatrix, projectionMatrix);
-    
-    for(let i = 0; i < PLANETS.length; ++i) {
+    for(let i = 0; i < PLANETS.length; ++i)
         drawPlanet(PLANETS[i], viewProjectionMatrix);
-    }
+    
+    Skybox.Draw(camera.viewMatrix, projectionMatrix);
     
     if(enablePostprocessing) Postprocessing.EndDrawing();
     requestAnimationFrame(mainLoop);
