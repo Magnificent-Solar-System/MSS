@@ -1,7 +1,7 @@
 class TechniquePostProcessing extends Technique {
     constructor() {
         super();
-        super.LoadShaders("technique/postprocessing/TechniquePostprocessing");
+        super.LoadShaders("/technique/postprocessing/TechniquePostProcessing");
         super.Link();
         this.locationSampler = super.GetUniformLocation("uSampler");
         
