@@ -40,7 +40,7 @@ class Quaternion {
         this.z = this.z * invNorm;
     }
     /**
-     * Inverses this quaternion.
+     * Inverses this quaternion. (reciprocal)
      */
     inverse() {
         let invSqrNorm = 1 / (this.s * this.s + this.x * this.x + this.y * this.y + this.z * this.z); 
@@ -49,6 +49,16 @@ class Quaternion {
         this.x = this.x * invSqrNorm;
         this.y = this.y * invSqrNorm;
         this.z = this.z * invSqrNorm;
+    }
+    
+    /**
+     * Negates all components of this quaternion.
+     */
+    negate() {
+        this.s = -this.s;
+        this.x = -this.x;
+        this.y = -this.y;
+        this.z = -this.z;
     }
     
     
@@ -214,6 +224,13 @@ class Quaternion {
         return new Quaternion(cosA, axis.x * sinA, axis.y * sinA, axis.z * sinA);
     }
     
+    /**
+     * Creates rotation quaternion from yaw, pitch and roll.
+     * @param   {number} yaw   
+     * @param   {number} pitch 
+     * @param   {number} roll  
+     * @returns {Quaternion} 
+     */
     static FromYawPitchRoll(yaw, pitch, roll) 
     {
         let hRoll = roll * 0.5; 
@@ -232,5 +249,104 @@ class Quaternion {
             ((sinhY * coshP) * coshR) - ((coshY * sinhP) * sinhR),
             ((coshY * coshP) * sinhR) - ((sinhY * sinhP) * coshR)
         );
+    }
+    
+    /**
+     * Linear interpolation between two quaternions. 
+     * Uses normalized arguments. 
+     * Normalizes result.
+     * @param   {Quaternion} pq1 
+     * @param   {Quaternion} pq2 
+     * @param   {number} t  
+     * @returns {Quaternion} 
+     */
+    static Lerp(pq1, pq2, t) {
+        let q1 = Quaternion.Normalize(pq1);
+        let q2 = Quaternion.Normalize(pq2);
+        return Quaternion.Normalize(Quaternion.Add(q1, Quaternion.MultiplyByScalar(Quaternion.Sub(q2, q1), t)));
+    }
+    
+    /**
+     * Linear interpolation between two quaternions. 
+     * Expects normalized quaternions (uses not normalized arguments). 
+     * Normalizes result.
+     * @param   {Quaternion} q1 
+     * @param   {Quaternion} q2 
+     * @param   {number} t  
+     * @returns {Quaternion} 
+     */
+    static LerpN(q1, q2, t) {
+        return Quaternion.Normalize(Quaternion.Add(q1, Quaternion.MultiplyByScalar(Quaternion.Sub(q2, q1), t)));
+    }
+    
+    /**
+     * Spherical linear interpolation between two quaternions.
+     * Uses normalized arguments.
+     * @param {Quaternion} pq1 
+     * @param {Quaternion} pq2 
+     * @param {number} t  
+     * @returns {Quaternion} Normalized result. 
+     */
+    static Slerp(pq1, pq2, t) {
+        let q1 = Quaternion.Normalize(pq1);
+        let q2 = Quaternion.Normalize(pq2);
+        
+        let dot = Quaternion.Dot(q1, q2);
+        if(dot < 0.0) {
+            //Always choose the shortest path
+            dot = -dot;
+            q2.negate();
+        }
+        const dot_max = 0.9995;
+        if(dot > dot_max) {
+            //If quaternions are too close -> lerp
+            return Quaternion.Normalize(Quaternion.Add(q1, Quaternion.MultiplyByScalar(Quaternion.Sub(q2, q1), t)));
+        }
+        
+        let theta = Math.acos(dot);
+        let thetaT = theta0 * t;
+        
+        let s2 =  Math.sin(thetaT) / Math.sin(theta);
+        
+        // sin(a - b) = sin a cos b - sin b cos a
+        
+        // sin( (1 - t)theta ) = sin( theta - thetaT ) =
+        // = sin (theta) * cos(thetaT) - sin (thetaT) * cos(theta)
+        
+        //s1 = sin( (1 - t)theta ) / sin( theta ) =
+        // = cos(thetaT) - sin (thetaT) * cos(theta) / sin(theta) =
+        // = cos(thetaT) - s2 * dot;
+        
+        let s1 = Math.cos(thetaT) - dot * s2; 
+
+        //Q = Q1 * s1 + Q2 * s2
+        return Quaternion.Add(Quaternion.MultiplyByScalar(q1, s1),  Quaternion.MultiplyByScalar(q2, s2));
+    }
+    /**
+     * Spherical linear interpolation between two quaternions.
+     * Expects normalized arguments.
+     * Normalizes result.
+     * @param {Quaternion} q1 
+     * @param {Quaternion} q2 
+     * @param {number} t  
+     * @returns {Quaternion} Normalized result. 
+     */
+    static SlerpN(q1, q2, t) {
+        let dot = Quaternion.Dot(q1, q2);
+        if(dot < 0.0) {
+            dot = -dot;
+            q2.negate();
+        }
+        const dot_max = 0.9995;
+        if(dot > dot_max) {
+            return Quaternion.Normalize(Quaternion.Add(q1, Quaternion.MultiplyByScalar(Quaternion.Sub(q2, q1), t)));
+        }
+        let theta = Math.acos(dot);
+        let thetaT = theta0 * t;
+        
+        let s2 =  Math.sin(thetaT) / Math.sin(theta);
+        let s1 = Math.cos(thetaT) - dot * s2; 
+
+        return Quaternion.Add(Quaternion.MultiplyByScalar(q1, s1),  Quaternion.MultiplyByScalar(q2, s2));
     }
 }
