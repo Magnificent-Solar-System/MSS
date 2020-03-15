@@ -18,6 +18,21 @@ class vec3 {
     get sqrlen() {
         return this.x * this.x + this.y * this.y + this.z * this.z;
     }
+    
+    get xz() {
+        return new vec2(this.x, this.z);
+    }
+    get xy() {
+        return new vec2(this.x, this.y);
+    }
+    
+    /**
+     * Returns a copy of this vector.
+     * @returns {vec3} 
+     */
+    copy() {
+        return new vec3(this.x, this.y, this.z);
+    }
     /**
      * Inverts this vector.
      */
@@ -161,5 +176,31 @@ class vec3 {
     */
     static unitZ() {
         return new vec3(0.0, 0.0, 1.0);
+    }
+    
+    /**
+     * Linear interpolation between two vectors.
+     * @param   {vec3}   v1 
+     * @param   {vec3}   v2 
+     * @param   {number} t  
+     * @returns {vec3} 
+     */
+    static lerp(v1, v2, t) {
+        return new vec3( v1.x + (v2.x - v1.x) * t, v1.y + (v2.y - v1.y) * t, v1.z + (v2.z - v1.z) * t);
+    }
+    
+    /**
+     * Clamps vector.
+     * @param   {vec3} v    
+     * @param   {vec3} vMin Minimum values.
+     * @param   {vec3} vMax Maximum values.
+     * @returns {vec3} 
+     */
+    static Clamp(v, vMin, vMax) {
+        let res = v.copy();
+        if(res.x > vMax.x) res.x = vMax.x; else if(res.x < vMin.x) res.x = vMin.x;
+        if(res.y > vMax.y) res.y = vMax.y; else if(res.y < vMin.y) res.y = vMin.y;
+        if(res.z > vMax.z) res.z = vMax.z; else if(res.z < vMin.z) res.z = vMin.z;
+        return res;
     }
 } 

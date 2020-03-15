@@ -48,7 +48,31 @@ class vec4 {
         this.w = val;
     }
     
+    get xyz() {
+        return vec3(this.x, this.y, this.z);
+    }
+    set xyz(v) {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
     get rgb() {
         return vec3(this.x, this.y, this.z);
+    }
+    set rgb(v) {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
+    
+    /**
+     * Linear interpolation between two vectors.
+     * @param   {vec4}   v1 
+     * @param   {vec4}   v2 
+     * @param   {number} t  
+     * @returns {vec4} 
+     */
+    static lerp(v1, v2, t) {
+        return new vec4( v1.x + (v2.x - v1.x) * t, v1.y + (v2.y - v1.y) * t, v1.z + (v2.z - v1.z) * t, v1.w + (v2.w - v1.w) * t );
     }
 }
