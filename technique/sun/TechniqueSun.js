@@ -1,7 +1,7 @@
 class TechniqueSun extends Technique {
     constructor() {
         super();
-        super.LoadShaders("/technique/sun/TechniqueSun");
+        super.LoadShaders("./technique/sun/TechniqueSun");
         super.Link();
         this.locationMatrix = super.GetUniformLocation("uMatrix");
         this.locationLightIntensity = super.GetUniformLocation("uLightColor");
