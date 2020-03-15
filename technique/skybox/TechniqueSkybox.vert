@@ -1,4 +1,3 @@
-var tchSkybox_vert = `
 uniform mat4 uProjectionMatrix;
 uniform mat4 uViewMatrix;
 
@@ -11,4 +10,3 @@ void main()
     fTexCoords = vPosition;
     gl_Position = (uProjectionMatrix * uViewMatrix * vec4(vPosition, 1.0)).xyww;
 }  
-`

@@ -1,4 +1,3 @@
-var tchEarth_frag = `
 precision mediump float;
 
 uniform sampler2D uSamplerDay;
@@ -14,4 +13,3 @@ void main(){
     vec4 nightColor = texture(uSamplerNight, fTexCoords);
     fragColor = mix(nightColor, dayColor, fLight);
 }
-`

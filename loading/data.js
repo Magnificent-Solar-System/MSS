@@ -22,6 +22,17 @@ function loadTexture(src, minFilter, magFilter, wrapS, wrapT){
     });
     return singleTexture;
 }
+//SYNC!
+function loadText(src, onload) {
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", src, false);
+
+    oReq.onload = function (oEvent) {
+        onload(oReq.responseText);
+    };
+
+    oReq.send(null);
+}
 
 const CUBEMAP_TARGET = [
     gl.TEXTURE_CUBE_MAP_POSITIVE_X,

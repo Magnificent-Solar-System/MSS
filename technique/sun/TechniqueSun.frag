@@ -1,4 +1,3 @@
-var tchSun_frag = `
 precision mediump float;
 
 uniform vec4 uLightColor;
@@ -11,4 +10,3 @@ out vec4 fragColor;
 void main(){
     fragColor = texture(uSampler, fTexCoords) * uLightColor;
 }
-`

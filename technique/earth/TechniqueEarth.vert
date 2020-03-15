@@ -1,4 +1,3 @@
-var tchEarth_vert = `
 uniform vec3 uSunPosition;
 uniform mat4 uWorldMatrix;
 uniform mat4 uViewProjectionMatrix;
@@ -19,4 +18,3 @@ void main() {
     gl_Position = uViewProjectionMatrix * worldPositionC;
     
 }
-`

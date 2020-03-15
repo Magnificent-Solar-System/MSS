@@ -1,8 +1,7 @@
 class TechniquePlanet extends Technique {
     constructor() {
         super();
-        super.AddShader(gl.FRAGMENT_SHADER, tchPlanet_frag);
-        super.AddShader(gl.VERTEX_SHADER, tchPlanet_vert);
+        super.LoadShaders("/technique/planet/TechniquePlanet");
         super.Link();
         this.locationWorldMatrix = super.GetUniformLocation("uWorldMatrix");
         this.locationViewProjectionMatrix = super.GetUniformLocation("uViewProjectionMatrix");

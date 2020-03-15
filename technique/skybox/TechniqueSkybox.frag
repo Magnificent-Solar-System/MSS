@@ -1,4 +1,3 @@
-var tchSkybox_frag = `
 precision mediump float;
 
 uniform samplerCube uSkybox;
@@ -11,4 +10,3 @@ void main()
 {    
     FragColor = texture(uSkybox, fTexCoords);
 }
-`

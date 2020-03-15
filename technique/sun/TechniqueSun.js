@@ -1,8 +1,7 @@
 class TechniqueSun extends Technique {
     constructor() {
         super();
-        super.AddShader(gl.FRAGMENT_SHADER, tchSun_frag);
-        super.AddShader(gl.VERTEX_SHADER, tchSun_vert);
+        super.LoadShaders("/technique/sun/TechniqueSun");
         super.Link();
         this.locationMatrix = super.GetUniformLocation("uMatrix");
         this.locationLightIntensity = super.GetUniformLocation("uLightColor");

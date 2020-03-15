@@ -1,4 +1,3 @@
-var tchPostProcessing_frag = `
 precision mediump float;
 
 uniform sampler2D uSampler;
@@ -12,4 +11,3 @@ void main(){
     vec3 mapped = cl / (cl + vec3(1.0));
     fragColor = vec4(mapped, 1.0);
 }
-`

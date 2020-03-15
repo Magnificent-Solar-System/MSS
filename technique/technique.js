@@ -24,6 +24,17 @@ class Technique {
         }
         this.shaders.length = 0;
     }
+    
+    LoadShaders(fileNameWithoutExtension) {
+        let self = this;
+        loadText(fileNameWithoutExtension + ".frag", function(txt){   
+            self.AddShader(gl.FRAGMENT_SHADER, txt);
+        });
+        loadText(fileNameWithoutExtension + ".vert", function(txt){   
+            self.AddShader(gl.VERTEX_SHADER, txt);
+        });
+    }
+    
     /* 
     [ name, componentsCount, componentsType ] 
     supports only continious arrays, dont uses vertexAttribIPointer

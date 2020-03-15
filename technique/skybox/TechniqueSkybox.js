@@ -1,8 +1,7 @@
 class TechniqueSkybox extends Technique {
     constructor() {
         super();
-        super.AddShader(gl.FRAGMENT_SHADER, tchSkybox_frag);
-        super.AddShader(gl.VERTEX_SHADER, tchSkybox_vert);
+        super.LoadShaders("/technique/skybox/TechniqueSkybox");
         super.Link();
         
         this.locationSkybox = super.GetUniformLocation("uSkybox");
