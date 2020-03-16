@@ -25,8 +25,9 @@ class Technique {
         this.shaders.length = 0;
     }
     
-    LoadShaders(fileNameWithoutExtension) {
+    LoadShaders(techniqueFolder, techniqueName) {
         let self = this;
+        let fileNameWithoutExtension = "./technique/" + techniqueFolder + '/' + techniqueName;
         loadText(fileNameWithoutExtension + ".frag", function(txt){   
             self.AddShader(gl.FRAGMENT_SHADER, txt);
         });
