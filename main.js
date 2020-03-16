@@ -1,4 +1,4 @@
-camera = new Camera(new vec3(0,50, -50), 1.57, 0, 0);
+camera = new Camera(new vec3(0,50, -50), 3.14, 0, 0);
 
 requestAnimationFrame(mainLoop); //todo: run after loading complete : or main executed after loading only? async textures loading...
 
