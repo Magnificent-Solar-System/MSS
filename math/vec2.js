@@ -20,8 +20,16 @@ class vec2 {
      * Returns a copy of this vector.
      * @returns {vec2} 
      */
-    copy() {
+    get copy() {
         return new vec2(this.x, this.y);
+    }
+    /**
+     * Copies values from another vector.
+     * @param {vec2} v2
+     */
+    set copy(v2) {
+        this.x = v2.x;
+        this.y = v2.y;
     }
     /**
      * Inverts this vector.

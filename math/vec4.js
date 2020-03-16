@@ -29,10 +29,20 @@ class vec4 {
     
     /**
      * Returns a copy of this vector.
-     * @returns {vec3} 
+     * @returns {vec4} 
      */
-    copy() {
+    get copy() {
         return new vec4(this.x, this.y, this.z, this.w);
+    }
+    /**
+     * Copies values from another vector.
+     * @param {vec4} v4 
+     */
+    set copy(v4) {
+        this.x = v4.x;
+        this.y = v4.y;
+        this.z = v4.z;
+        this.w = v4.w;
     }
     /**
      * Inverts this vector.

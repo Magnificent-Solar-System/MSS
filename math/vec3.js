@@ -30,8 +30,17 @@ class vec3 {
      * Returns a copy of this vector.
      * @returns {vec3} 
      */
-    copy() {
+    get copy() {
         return new vec3(this.x, this.y, this.z);
+    }
+    /**
+     * Copies values from another vector.
+     * @param {vec3} v3
+     */
+    set copy(v3) {
+        this.x = v3.x;
+        this.y = v3.y;
+        this.z = v3.z;
     }
     /**
      * Inverts this vector.
