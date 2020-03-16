@@ -21,6 +21,7 @@ function mainLoop(time_now) {
     t += deltaTime;
     
     camera.update();
+    camera.yaw = t;
     let viewProjectionMatrix = new mat4();
     mat4.Multiply(viewProjectionMatrix, camera.viewMatrix, projectionMatrix);
     
