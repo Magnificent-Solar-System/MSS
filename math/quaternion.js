@@ -33,8 +33,19 @@ class Quaternion {
      * Returns a copy of this quaternion.
      * @returns {Quaternion} 
      */
-    copy() {
+    get copy() {
         return new Quaternion(this.s, this.x, this.y, this.z);
+    }
+
+     /**
+     * Copies values from another quaternion.
+     * @param {Quaternion} q 
+     */
+    set copy(q) {
+        this.s = q.s;
+        this.x = q.x;
+        this.y = q.y;
+        this.z = q.z;
     }
     
     /**
@@ -421,5 +432,31 @@ class Quaternion {
     
     static SquadN(q1, q2, s1, s2, t) {
         return Quaternion.SlerpN(Quaternion.SlerpN(q1, q2, t), Quaternion.SlerpN(s1, s2, t), 2 * t * (1 - t));
+    }
+    
+    static Power(q, t) {
+        return Quaternion.Exp(Quaternion.MultiplyByScalar(Quaternion.Log(q), t));
+    }
+    
+    static PowerN(q, t) {
+        return Quaternion.ExpN(Quaternion.MultiplyByScalar(Quaternion.LogN(q), t));
+    }
+    
+    static IntermediateN(q0, q1, q2, q3, s1, s2) {
+        let rcQ1 = Quaternion.Reciprocal(q1);
+        let rcQ2 = Quaternion.Reciprocal(q2);
+        
+        s1.copy = Quaternion.Multiply(
+            Quaternion.ExpN(Quaternion.MultiplyByScalar(Quaternion.Add(
+                Quaternion.LogN(Quaternion.Multiply(q2, rcQ1)), 
+                Quaternion.LogN(Quaternion.Multiply(q0, rcQ1))
+            ), -0.25)),
+            q1);
+        s2.copy = Quaternion.Multiply(
+            Quaternion.ExpN(Quaternion.MultiplyByScalar(Quaternion.Add(
+                Quaternion.LogN(Quaternion.Multiply(q3, rcQ2)), 
+                Quaternion.LogN(Quaternion.Multiply(q1, rcQ2))
+            ), -0.25)),
+            q2);
     }
 }
