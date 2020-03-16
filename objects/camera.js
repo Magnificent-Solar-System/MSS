@@ -2,18 +2,16 @@ class Camera {
     constructor(pos, yaw, pitch, roll) {
         this.position = pos;
         this.viewMatrix = new mat4();
-        this.yaw = (yaw === undefined) ? 0.0 : yaw;
-        this.pitch = (pitch === undefined) ? 0.0 : pitch;
-        this.roll = (roll === undefined) ? 0.0 : roll;
-        this.update();
+        this.quat = Quaternion.Identity();
+        this.rotate(yaw, pitch, roll);
     }
-    update() {
-        let quat = Quaternion.FromYawPitchRoll(this.yaw, this.pitch, this.roll);
+    rotate(yaw, pitch, roll) {
+        let deltaQuat = Quaternion.FromYawPitchRoll(yaw, pitch, roll);
+        this.quat = Quaternion.Multiply(this.quat, deltaQuat);
         
-        
-        this.xAxis = quat.transform(vec3.unitX());
-        this.yAxis = quat.transform(vec3.unitY());
-        this.zAxis = quat.transform(vec3.inv(vec3.unitZ()));
+        this.xAxis = this.quat.transform(vec3.unitX());
+        this.yAxis = this.quat.transform(vec3.unitY());
+        this.zAxis = this.quat.transform(vec3.inv(vec3.unitZ()));
         
         mat4.LookAt(this.viewMatrix, this.position, vec3.add(this.position, this.zAxis), this.yAxis);
     }

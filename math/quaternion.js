@@ -249,6 +249,76 @@ class Quaternion {
         let cosA = Math.cos(halfAngle);
         return new Quaternion(cosA, axis.x * sinA, axis.y * sinA, axis.z * sinA);
     }
+    /**
+     * Returns axis and angle represented by quaternion.
+     * @param   {Quaternion}   q     
+     * @returns {[vec3, number]}   [axis, angle]
+     */
+    static ToAxisAngle(q) {
+        let k = Math.sqrt(1 - qw * qw)
+        if(k > Quaternion.Epsilon) {
+            k = 1.0 / k;
+            return [ 
+                new vec3(q.x * k, q.y * k, q.z * k),    // axis
+                2.0 * Math.acos(q.s)                    // angle 
+            ];
+        }
+        else {
+            return [ 
+                new vec3(q.x, q.y, q.z),    // axis
+                2.0 * Math.acos(q.s)        // angle 
+            ];
+        }
+    }
+    
+    /**
+     * Creates quaternion from rotation matrix.
+     * @param   {mat4} m
+     * @returns {Quaternion} 
+     */
+    static FromMatrix(m) {
+        let q = new Quaternion();
+        let t = 0;
+        if (m.m[10] < 0)
+        {
+            if (m.m[0] > m.m[5])
+            {
+                t = 1 + m.m[0] - m.m[5] - m.m[10];
+                q.x = t;
+                q.y = m.m[4] + m.m[1];
+                q.z = m.m[2] + m.m[8];
+                q.s = m.m[6] - m.m[9];
+            }
+            else
+            {
+                t = 1 - m.m[0] + m.m[5] - m.m[10];
+                q.x = m.m[4] + m.m[1];
+                q.y = t;
+                q.z = m.m[9] + m.m[6];
+                q.s = m.m[8] - m.m[2];
+            }
+        }
+        else
+        {
+            if (m.m[0] < -m.m[5])
+            {
+                t = 1 - m.m[0] - m.m[5] + m.m[10];
+                q.x = m.m[2] + m.m[8];
+                q.y = m.m[9] + m.m[6];
+                q.z = t; 
+                q.s = m.m[1] - m.m[4];
+            }
+            else
+            {
+                t = 1 + m.m[0] + m.m[5] + m.m[10];
+                q.x = m.m[6] - m.m[9];
+                q.y = m.m[8] - m.m[2];
+                q.z = m.m[1] - m.m[4];
+                q.s = t;
+            }
+        }
+        return Quaternion.MultiplyByScalar(q, 0.5 / Math.sqrt(t));
+    }
     
     /**
      * Creates rotation quaternion from yaw, pitch and roll.
@@ -459,4 +529,6 @@ class Quaternion {
             ), -0.25)),
             q2);
     }
+    
+    static Epsilon = 1e-5;
 }

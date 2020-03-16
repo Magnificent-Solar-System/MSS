@@ -1,4 +1,4 @@
-camera = new Camera(new vec3(0,50, -50), 3.14, 0, 0);
+camera = new Camera(new vec3(0,50, -120), 3.14, -0.1, 0);
 
 requestAnimationFrame(mainLoop); //todo: run after loading complete : or main executed after loading only? async textures loading...
 
@@ -20,8 +20,6 @@ function mainLoop(time_now) {
     time_last = time_now;
     t += deltaTime;
     
-    camera.update();
-    camera.yaw = t/10;
     let viewProjectionMatrix = new mat4();
     mat4.Multiply(viewProjectionMatrix, camera.viewMatrix, projectionMatrix);
     

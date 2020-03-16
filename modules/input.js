@@ -13,8 +13,7 @@ window.onmousemove = function (e) {
   if (mouseDown) {
       let deltaYaw = -rotationSpeed * (e.clientX - prevX) / canvas.width;
       let deltaPitch = -rotationSpeed * (e.clientY - prevY) / canvas.height; 
-      camera.yaw += deltaYaw;
-      camera.pitch += deltaPitch;
+      camera.rotate(deltaYaw, deltaPitch, 0);
       prevX = e.clientX;
       prevY = e.clientY;
   }
