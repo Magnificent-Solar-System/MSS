@@ -5,8 +5,8 @@ function loadImage(src, onload) {
     image.src = src;
 }
 function loadTexture(src, minFilter, magFilter, wrapS, wrapT){
-    minFilter = (minFilter === undefined) ? gl.NEAREST : minFilter;
-    magFilter = (magFilter === undefined) ? gl.NEAREST : magFilter;
+    minFilter = (minFilter === undefined) ? gl.LINEAR : minFilter;
+    magFilter = (magFilter === undefined) ? gl.LINEAR : magFilter;
     wrapS = (wrapS === undefined) ? gl.CLAMP_TO_EDGE : wrapS;
     wrapT = (wrapT === undefined) ? gl.CLAMP_TO_EDGE : wrapT;
     
