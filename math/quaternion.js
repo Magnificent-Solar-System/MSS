@@ -69,6 +69,13 @@ class Quaternion {
         this.z = -this.z;
     }
     
+    /**
+     * Returns a copy of this quaternion without the scalar part.
+     * @returns {Quaternion} Pure quaternion.
+     */
+    pure() {
+        return new Quaternion(0, this.x, this.y, this.z);
+    }
     
     toMatrix(m) {
         let x2 = this.x * this.x;
@@ -356,5 +363,63 @@ class Quaternion {
         let s1 = Math.cos(thetaT) - dot * s2; 
 
         return Quaternion.Add(Quaternion.MultiplyByScalar(q1, s1),  Quaternion.MultiplyByScalar(q2, s2));
+    }
+    /**
+     * Returns the exponential of the quaternion. 
+     * q = [a, v]; theta = |v|; exp(q) = exp(a) * (cos(theta)  + sin(theta) / theta * v)
+     * @param   {Quaternion} q
+     * @returns {Quaternion}
+     */
+    static Exp(q) {
+        let len = Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z);
+        let expS = Math.exp(q.s);
+        let k = expS * Math.sin(len) / len;
+        return new Quaternion(
+            expS * Math.cos(len), 
+            q.x * k, q.y * k, q.z * k);
+    }
+     /**
+     * Returns the exponential of the quaternion.
+     * Expects quaternion with scalar part equal to 0.
+     * q = [a, v]; theta = |v|; exp(q) = cos(theta)  + sin(theta) / theta * v
+     * @param   {Quaternion} q
+     * @returns {Quaternion}
+     */
+    static ExpN(q) {
+        let len = Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z);
+        let k = Math.sin(len) / len;
+        return new Quaternion(
+            Math.cos(len), 
+            q.x * k, q.y * k, q.z * k
+        );
+    }
+    
+    /**
+     * Returns logarithm of the quaternion.
+     * @param   {Quaternion}   q 
+     * @returns {Quaternion}
+     */
+    static Log(q) {
+        let l = q.x * q.x + q.y * q.y + q.z * q.z;
+        let n = Math.sqrt(l + q.s * q.s); // |q|
+        l = Math.sqrt(l);
+        n = 1.0 / l * Math.acos(q.s / n); // 1 / |q.v| * acos(q.s / |q|) 
+        return new Quaternion(
+            Math.log(n),
+            q.x * n, q.y * n, q.z * n
+        );
+    }
+    
+    static LogN(q) {
+        let k = Math.sin(Math.acos(q.s));
+        return new Quaternion(0, k * q.x, k * q.y, k * q.z );
+    }
+    
+    static Squad(q1, q2, s1, s2, t) {
+        return Quaternion.Slerp(Quaternion.Slerp(q1, q2, t), Quaternion.Slerp(s1, s2, t), 2 * t * (1 - t));
+    }
+    
+    static SquadN(q1, q2, s1, s2, t) {
+        return Quaternion.SlerpN(Quaternion.SlerpN(q1, q2, t), Quaternion.SlerpN(s1, s2, t), 2 * t * (1 - t));
     }
 }
