@@ -5,10 +5,10 @@ function loadImage(src, onload) {
     image.src = src;
 }
 function loadTexture(src, minFilter, magFilter, wrapS, wrapT){
-    minFilter = (minFilter === undefined) ? gl.LINEAR : minFilter;
-    magFilter = (magFilter === undefined) ? gl.LINEAR : magFilter;
-    wrapS = (wrapS === undefined) ? gl.CLAMP_TO_EDGE : wrapS;
-    wrapT = (wrapT === undefined) ? gl.CLAMP_TO_EDGE : wrapT;
+    minFilter = default_arg(minFilter, gl.LINEAR);
+    magFilter = default_arg(magFilter, gl.LINEAR);
+    wrapS = default_arg(wrapS, gl.CLAMP_TO_EDGE);
+    wrapT = default_arg(wrapT, gl.CLAMP_TO_EDGE);
     
     let singleTexture = gl.createTexture();
     loadImage(src, function(img){
@@ -44,8 +44,8 @@ const CUBEMAP_TARGET = [
 ];
 
 function loadCubemapTexture(textures, minFilter, magFilter) {
-    minFilter = (minFilter === undefined) ? gl.NEAREST : minFilter;
-    magFilter = (magFilter === undefined) ? gl.NEAREST : magFilter;
+    minFilter = default_arg(minFilter, gl.LINEAR);
+    magFilter = default_arg(magFilter, gl.LINEAR);
     var texture = gl.createTexture();
     for(let i = 0; i < textures.length; i++) {
         loadImage(textures[i], function(img){

@@ -100,7 +100,7 @@ class vec2 {
      */
     static divvs(v, s) {
         let is = 1 / s;
-        return new vec2(v.x / is, v.y * is);
+        return new vec2(v.x * is, v.y * is);
     }
     /**
      * Returns vector with components of first vector, multiplied by corresponding components second vector.

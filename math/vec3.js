@@ -121,7 +121,7 @@ class vec3 {
      */
     static divvs(v, s) {
         let is = 1 / s;
-        return new vec3(v.x / is, v.y * is, v.z * is);
+        return new vec3(v.x * is, v.y * is, v.z * is);
     }
     /**
      * Returns vector with components of first vector, multiplied by corresponding components second vector.

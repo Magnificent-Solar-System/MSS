@@ -30,6 +30,14 @@ class Quaternion {
     }
     
     /**
+     * Returns a copy of this quaternion.
+     * @returns {Quaternion} 
+     */
+    copy() {
+        return new Quaternion(this.s, this.x, this.y, this.z);
+    }
+    
+    /**
      * Normalizes this quaternion.
      */
     normalize() {
