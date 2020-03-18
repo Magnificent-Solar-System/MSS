@@ -12,7 +12,8 @@ class Camera {
         this.xAxis = this.quat.transform(vec3.unitX());
         this.yAxis = this.quat.transform(vec3.unitY());
         this.zAxis = this.quat.transform(vec3.inv(vec3.unitZ()));
-        
+    }
+    update() {
         mat4.LookAt(this.viewMatrix, this.position, vec3.add(this.position, this.zAxis), this.yAxis);
     }
     

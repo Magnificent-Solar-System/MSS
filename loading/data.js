@@ -102,3 +102,18 @@ Skybox.texture = loadCubemapTexture([
     wtf, wtf, wtf, wtf, wtf, wtf
 ]); //Skybox
 Skybox.Initialize();
+
+var test = [
+    geom.Icosphere(1, 0, true, true),
+    geom.Icosphere(1, 1, true, true),
+    geom.Icosphere(1, 2, true, true),
+    geom.Icosphere(1, 3, true, true),
+    geom.Icosphere(1, 4, true, true),
+    geom.Icosphere(1, 5, true, true),
+    geom.Icosphere(1, 6, true, true)
+];
+let testW = [];
+for(let i = 0; i < test.length; i++) {
+    testW[i] = new mat4();
+    mat4.Translation(testW[i], new vec3((i - test.length / 2) * 2.5, 50, -110));
+}

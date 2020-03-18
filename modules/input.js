@@ -29,12 +29,12 @@ window.onkeydown = function(e) {
         camera.position = vec3.add(camera.position, vec3.mulvs(camera.zAxis, moveSpeed));
     }
     if (e.code == 'KeyA') {
-         camera.position = vec3.add(camera.position, vec3.mulvs(camera.xAxis, moveSpeed));
+         camera.position = vec3.add(camera.position, vec3.mulvs(camera.xAxis, -moveSpeed));
     }
     if (e.code == 'KeyS') {
          camera.position = vec3.add(camera.position, vec3.mulvs(camera.zAxis, -moveSpeed));
     }
     if (e.code == 'KeyD') {
-         camera.position = vec3.add(camera.position, vec3.mulvs(camera.xAxis, -moveSpeed));
+         camera.position = vec3.add(camera.position, vec3.mulvs(camera.xAxis, moveSpeed));
     }
 }
