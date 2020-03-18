@@ -1,10 +1,10 @@
-class TechniqueSkybox extends Technique {
+class TechniqueSkysphere extends Technique {
     constructor() {
         super();
-        super.LoadShaders("skybox", "TechniqueSkybox");
+        super.LoadShaders("skysphere", "TechniqueSkysphere");
         super.Link();
         
-        this.locationSkybox = super.GetUniformLocation("uSkybox");
+        this.locationSampler = super.GetUniformLocation("uSampler");
         this.locationProjectionMatrix = super.GetUniformLocation("uProjectionMatrix");
         this.locationViewMatrix = super.GetUniformLocation("uViewMatrix");
         
@@ -17,7 +17,7 @@ class TechniqueSkybox extends Technique {
     SetTexture(texture) {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
-        gl.uniform1i(this.locationSkybox, 0);
+        gl.uniform1i(this.locationSampler, 0);
     }
     Use(viewMatrix, projectionMatrix) {
         super.Use();

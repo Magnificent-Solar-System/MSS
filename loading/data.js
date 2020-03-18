@@ -67,7 +67,7 @@ var tchPlanet = new TechniquePlanet();
 var tchPostProcessing = new TechniquePostProcessing();
 var tchSun = new TechniqueSun();
 var tchEarth = new TechniqueEarth();
-var tchSkybox = new TechniqueSkybox();
+var tchSkysphere = new TechniqueSkysphere();
 Postprocessing.Initialize(tchPostProcessing);
 
 /* PLANETS */
@@ -90,7 +90,7 @@ function loadPlanets(...planets) {
     }
 }
 
-var planetGeometry = geom.Sphere(planetParallels, planetMeridians, 1.0, true, true);
+var planetGeometry = geom.Icosphere(1.0, 6, true, true);
 
 SUN.technique = tchSun;
 EARTH.technique = tchEarth;
@@ -98,22 +98,22 @@ EARTH.technique = tchEarth;
 loadPlanets(SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE);
 
 let wtf = "https://i.ibb.co/vYxRpF4/PSX-20200316-115002.jpg";
-Skybox.texture = loadCubemapTexture([
+Skysphere.texture = loadCubemapTexture([
     wtf, wtf, wtf, wtf, wtf, wtf
-]); //Skybox
-Skybox.Initialize();
+]); //Skysphere
+Skysphere.Initialize();
 
 var test = [
-    geom.Icosphere(1, 0, true, true),
-    geom.Icosphere(1, 1, true, true),
-    geom.Icosphere(1, 2, true, true),
-    geom.Icosphere(1, 3, true, true),
-    geom.Icosphere(1, 4, true, true),
-    geom.Icosphere(1, 5, true, true),
+    geom.Icosphere(3, 0, true, true),
+    geom.Icosphere(2, 1, true, true),
+    geom.Icosphere(1.8, 2, true, true),
+    geom.Icosphere(1.6, 3, true, true),
+    geom.Icosphere(1.4, 4, true, true),
+    geom.Icosphere(1.2, 5, true, true),
     geom.Icosphere(1, 6, true, true)
 ];
 let testW = [];
 for(let i = 0; i < test.length; i++) {
     testW[i] = new mat4();
-    mat4.Translation(testW[i], new vec3((i - test.length / 2) * 2.5, 50, -110));
+    mat4.Translation(testW[i], new vec3((i - test.length / 2) * 4, 50, -110));
 }

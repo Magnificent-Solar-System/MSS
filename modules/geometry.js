@@ -1,5 +1,5 @@
 var geom = {}
-geom.Sphere = function(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
+geom.UVSphere = function(parallelsCount, meridiansCount, radius, generateNormales, generateTexCoords) {
     generateNormales = (generateNormales === undefined ? false : generateNormales);
     generateTexCoords = (generateTexCoords === undefined ? false : generateTexCoords);
     let vertices = [];
@@ -219,11 +219,11 @@ geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNorma
     let buff = new Array(verts.length * vertSize);
     for(let i = 0; i < verts.length; i++) {
         let index = i * vertSize;
-        buff[index] = verts[i].x;
-        buff[index + 1] = verts[i].y;
-        buff[index + 2] = verts[i].z;
+        buff[index] = verts[i].x * radius;
+        buff[index + 1] = verts[i].y * radius;
+        buff[index + 2] = verts[i].z * radius;
         if(generateTexCoords) {
-            buff[index + 3] = verts[i].u;
+            buff[index + 3] = verts[i].u * 0;
             buff[index + 4] = verts[i].v;
         }
         if(generateNormales) {

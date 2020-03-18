@@ -42,7 +42,7 @@ function mainLoop(time_now) {
         tchPlanet.DisableAttributes();
     }
     
-    Skybox.Draw(camera.viewMatrix, projectionMatrix);
+    Skysphere.Draw(camera.viewMatrix, projectionMatrix);
     
     if(enablePostprocessing) Postprocessing.EndDrawing();
     requestAnimationFrame(mainLoop);
