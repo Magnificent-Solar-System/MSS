@@ -45,7 +45,7 @@ var MERCURY = {
 
 var VENUS = {
     mass : tmp2,
-    position : new vec3(-tmp, 0, 0),
+    position : new vec3(0, 53, -130),
     radius : 5,
     velocity : new vec3(0, 0, 0),
     srcTexture0 : "https://i.ibb.co/D5M2ndm/2k-venus-surface.jpg"

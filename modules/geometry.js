@@ -149,6 +149,7 @@ geom._icosahedron_indices = [
 geom._icosahedron_indices_inverted = Array.from(geom._icosahedron_indices).reverse();
 
 geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNormales, invert) {
+    if(subdivisions >= 7) console.warn("Too many icosphere subdivisions can cause bugs. Acceptable maximum of subdivisions is 6.");
     var indices;
     if(invert)
         indices = Array.from(geom._icosahedron_indices_inverted);
@@ -156,14 +157,8 @@ geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNorma
         indices = Array.from(geom._icosahedron_indices);
     let verts = new Array(geom._icosahedron_vertices.length);
     let vi = 0;
-    function push_vert(x, y, z, u, v) {
-        verts[vi] = {
-            'x' : x,
-            'y' : y,
-            'z' : z,
-            'u' : u,
-            'v' : v
-        };
+    function push_vert(x, y, z) {
+        verts[vi] = new vec3(x, y, z);
         vi++;
         return vi - 1;
     }
@@ -183,9 +178,7 @@ geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNorma
             let vi = push_vert( 
                 (verts[a].x + verts[b].x) * 0.5,
                 (verts[a].y + verts[b].y) * 0.5,
-                (verts[a].z + verts[b].z) * 0.5,
-                (verts[a].u + verts[b].u) * 0.5,
-                (verts[a].v + verts[b].v) * 0.5
+                (verts[a].z + verts[b].z) * 0.5
             );
             let k = 1.0 / Math.sqrt(verts[vi].x * verts[vi].x + verts[vi].y * verts[vi].y + verts[vi].z * verts[vi].z);
             verts[vi].x *= k;
@@ -195,6 +188,7 @@ geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNorma
             return vi;
         }
     }
+    //subdivision
     let tric = indices.length / 3;
     for(let si = 0; si < subdivisions; ++si) {
         for(let ti = 0; ti < tric; ti++) {
@@ -214,7 +208,50 @@ geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNorma
         }
         tric *= 4;
     }
+    //generate uv
+    for(let i = 0; i < verts.length; i++) {
+        verts[i].u = 0.5 + Math.atan2(verts[i].z, verts[i].x) / DoublePI;
+        verts[i].v = 0.5 + Math.asin(verts[i].y) / Math.PI;
+    }
+    //uv fixing
+    let fixed = {};
+    for(let ti = 0; ti < tric; ti++) {
+        let triIndex = ti * 3;
+        let a = indices[triIndex];
+        let b = indices[triIndex + 1];
+        let c = indices[triIndex + 2];
+        let vt1 = new vec3(verts[b].u - verts[a].u, verts[b].v - verts[a].v, 0);
+        let vt2 = new vec3(verts[c].u - verts[a].u, verts[c].v - verts[a].v, 0);
+        let vtC = vec3.cross(vt1, vt2);
+        if(vtC.z < 0.0) {
+            if(verts[a].u < 0.25) {
+                if(fixed.hasOwnProperty(a)) indices[triIndex] = fixed[a];
+                else {
+                    indices[triIndex] = fixed[a] = push_vert(verts[a].x, verts[a].y, verts[a].z);
+                    verts[fixed[a]].u = verts[a].u + 1.0;
+                    verts[fixed[a]].v = verts[a].v;
+                }
+            }
+            if(verts[b].u < 0.25) {
+                if(fixed.hasOwnProperty(b)) indices[triIndex + 1] = fixed[b];
+                else {
+                    indices[triIndex + 1] = fixed[b] = push_vert(verts[b].x, verts[b].y, verts[b].z);
+                    verts[fixed[b]].u = verts[b].u + 1.0;
+                    verts[fixed[b]].v = verts[b].v;
+                }
+            }
+            if(verts[c].u < 0.25) {
+                if(fixed.hasOwnProperty(c)) indices[triIndex + 2] = fixed[c];
+                else {
+                    indices[triIndex + 2] = fixed[c] = push_vert(verts[c].x, verts[c].y, verts[c].z);
+                    verts[fixed[c]].u = verts[c].u + 1.0;
+                    verts[fixed[c]].v = verts[c].v;
+                }
+            }
+        }
+    }
     
+    //to buffers
     let vertSize = 3 + (generateTexCoords ? 2 : 0) + (generateNormales ? 3 : 0);
     let buff = new Array(verts.length * vertSize);
     for(let i = 0; i < verts.length; i++) {
@@ -223,7 +260,7 @@ geom.Icosphere = function(radius, subdivisions, generateTexCoords, generateNorma
         buff[index + 1] = verts[i].y * radius;
         buff[index + 2] = verts[i].z * radius;
         if(generateTexCoords) {
-            buff[index + 3] = verts[i].u * 0;
+            buff[index + 3] = verts[i].u;
             buff[index + 4] = verts[i].v;
         }
         if(generateNormales) {

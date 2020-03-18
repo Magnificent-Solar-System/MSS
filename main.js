@@ -26,21 +26,12 @@ function mainLoop(time_now) {
     
     gl.bindBuffer(gl.ARRAY_BUFFER, planetGeometry.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
+
+    let quat = Quaternion.FromYawPitchRoll(1.7, 0, 2);
+    quat.toMatrix(VENUS.mat_rotation);
     
     for(let i = 0; i < PLANETS.length; ++i)
         drawPlanet(PLANETS[i], viewProjectionMatrix);
-    
-    tchPlanet.Use();
-    tchPlanet.SetTextures(URANUS.texture0);
-    tchPlanet.SetViewProjectionMatrix(viewProjectionMatrix);
-    for(let i = 0; i < test.length; i++) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, test[i].vertexBuffer);
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, test[i].indexBuffer);
-        tchPlanet.SetupAttributes();
-        tchPlanet.SetWorldMatrix(testW[i]);
-        gl.drawElements(gl.TRIANGLES, test[i].elementCount, gl.UNSIGNED_SHORT, 0);
-        tchPlanet.DisableAttributes();
-    }
     
     Skysphere.Draw(camera.viewMatrix, projectionMatrix);
     

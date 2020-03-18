@@ -74,23 +74,31 @@ Postprocessing.Initialize(tchPostProcessing);
 
 function loadPlanets(...planets) {
     for(let i = 0; i < planets.length; i++) {
-        if(planets[i].technique === undefined) planets[i].technique = tchPlanet;
-        planets[i].texture0 = loadTexture(planets[i].srcTexture0);
-        if(planets[i].srcTexture1 !== undefined) planets[i].texture1 = loadTexture(planets[i].srcTexture1);
-        if(planets[i].srcTexture2 !== undefined) planets[i].texture2 = loadTexture(planets[i].srcTexture2);
+        if(planets[i].technique === undefined) 
+            planets[i].technique = tchPlanet;
+        
+        planets[i].texture0 = loadTexture(planets[i].srcTexture0, gl.LINEAR, gl.LINEAR, gl.REPEAT, gl.REPEAT);
+        
+        if(planets[i].srcTexture1 !== undefined) 
+            planets[i].texture1 = loadTexture(planets[i].srcTexture1, gl.LINEAR, gl.LINEAR, gl.REPEAT, gl.REPEAT);
+        if(planets[i].srcTexture2 !== undefined) 
+            planets[i].texture2 = loadTexture(planets[i].srcTexture2, gl.LINEAR, gl.LINEAR, gl.REPEAT, gl.REPEAT);
         
         //pre-cached matrices
         planets[i].mat_rotation = new mat4();
         planets[i].mat_scale = new mat4();
         planets[i].mat_translation = new mat4();
         planets[i].mat_world = new mat4();
+        planets[i].mat = new mat4();
+        planets[i].mat_rotation.identity();
         
         //scale never changes, compute now
         mat4.Scale(planets[i].mat_scale, vec3.fromScalar(planets[i].radius));
     }
 }
 
-var planetGeometry = geom.Icosphere(1.0, 6, true, true);
+//var planetGeometry = geom.Icosphere(1.0, 6, true, true);
+var planetGeometry = geom.UVSphere(planetParallels, planetMeridians, 1.0, true, true);
 
 SUN.technique = tchSun;
 EARTH.technique = tchEarth;

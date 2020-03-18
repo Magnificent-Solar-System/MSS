@@ -18,6 +18,7 @@ class TechniqueSun extends Technique {
         gl.bindTexture(gl.TEXTURE_2D, texture0);
         gl.uniform1i(this.uSampler, 0);
     }
+    SetAdditionalMatrices() {}
     SetMatrix(matrix) {
         gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
     }

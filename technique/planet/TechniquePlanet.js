@@ -4,7 +4,8 @@ class TechniquePlanet extends Technique {
         super.LoadShaders("planet", "TechniquePlanet");
         super.Link();
         this.locationWorldMatrix = super.GetUniformLocation("uWorldMatrix");
-        this.locationViewProjectionMatrix = super.GetUniformLocation("uViewProjectionMatrix");
+        this.locationMatrix = super.GetUniformLocation("uMatrix");
+        this.locationRotationMatrix = super.GetUniformLocation("uRotationMatrix"); 
         this.locationSunPosition = super.GetUniformLocation("uSunPosition");
         this.locationSampler = super.GetUniformLocation("uSampler");
         
@@ -19,11 +20,12 @@ class TechniquePlanet extends Technique {
         gl.bindTexture(gl.TEXTURE_2D, texture0);
         gl.uniform1i(this.locationSampler, 0);
     }
-    SetWorldMatrix(worldMatrix) {
-        gl.uniformMatrix4fv(this.locationWorldMatrix, false, worldMatrix.m);
+    SetAdditionalMatrices(planet) {
+        gl.uniformMatrix4fv(this.locationWorldMatrix, false, planet.mat_world.m);
+        gl.uniformMatrix4fv(this.locationRotationMatrix, false, planet.mat_rotation.m);
     }
-    SetViewProjectionMatrix(viewProjectionMatrix) {
-        gl.uniformMatrix4fv(this.locationViewProjectionMatrix, false, viewProjectionMatrix.m);
+    SetMatrix(matrix) {
+        gl.uniformMatrix4fv(this.locationMatrix, false, matrix.m);
     }
     Use() {
         super.Use();
