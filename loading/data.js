@@ -22,6 +22,48 @@ function loadTexture(src, minFilter, magFilter, wrapS, wrapT){
     });
     return singleTexture;
 }
+var loadModel =  function(txt){
+    let text = txt.split('\n').join().split(' ').join().split(',');
+    let verticals = [];
+    let textureCoords = [];
+    let normals = [];
+    let index = [];
+    for(let i = 0;i < text.length;i++){
+        if(text[i] == "v"){
+            verticals.push(text[i+1]);
+            verticals.push(text[i+2]);
+            verticals.push(text[i+3]);
+            i+=3;
+        }
+        if(text[i] == "vt"){
+            textureCoords.push(text[i+1]);
+            textureCoords.push(text[i+2]);
+            i+=2;
+        }
+        if(text[i] == "vn"){
+            normals.push(text[i+1]);
+            normals.push(text[i+2]);
+            normals.push(text[i+3]);
+            i+=3;
+        }
+        if(text[i] == "f"){
+            let ind = text[i+1].split('/');
+            for(let k = 0;k<ind.length;k++){
+                index.push(ind[k]);
+            }
+            ind = text[i+1].split('/');
+            for(let k = 0;k<ind.length;k++){
+                index.push(ind[k]);
+            }
+            ind = text[i+2].split('/');
+            for(let k = 0;k<ind.length;k++){
+                index.push(ind[k]);
+            }
+        }
+    }
+    return [verticals,textureCoords,normals,index];
+}
+loadText("/models/ship.obj",loadModel);
 //SYNC!
 function loadText(src, onload) {
     var oReq = new XMLHttpRequest();
@@ -67,6 +109,7 @@ var tchPlanet = new TechniquePlanet();
 var tchPostProcessing = new TechniquePostProcessing();
 var tchSun = new TechniqueSun();
 var tchEarth = new TechniqueEarth();
+var tchShip = new TechniqueEarth();
 var tchSkysphere = new TechniqueSkysphere();
 Postprocessing.Initialize(tchPostProcessing);
 
