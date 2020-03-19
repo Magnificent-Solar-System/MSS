@@ -5,7 +5,7 @@ canvas.height = document.body.clientHeight; //document.height is obsolete
 canvasW = canvas.width;
 canvasH = canvas.height;
 
-gl = canvas.getContext("webgl2", { antialias: false });  
+gl = canvas.getContext("webgl2-compute", { antialias: false });  
 gl.getExtension("EXT_color_buffer_float");
 gl.clearColor(0, 0, 0, 1);
 
@@ -18,3 +18,8 @@ gl.depthFunc(gl.LEQUAL);
 gl.clearDepth(1);
 
 Technique.Initialize();
+
+loadData();
+
+Skysphere.Initialize();
+Postprocessing.Initialize();

@@ -22,7 +22,7 @@ function loadTexture(src, minFilter, magFilter, wrapS, wrapT){
     });
     return singleTexture;
 }
-//SYNC!
+
 function loadText(src, onload) {
     var oReq = new XMLHttpRequest();
     oReq.open("GET", src, false);
@@ -34,16 +34,59 @@ function loadText(src, onload) {
     oReq.send(null);
 }
 
-const CUBEMAP_TARGET = [
-    gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-    gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-    gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-    gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-    gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-    gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
-];
+function loadModel(txt){
+    let text = txt.split('\n').join().split(' ').join().split(',');
+    let verticals = [];
+    let textureCoords = [];
+    let normals = [];
+    let index = [];
+    for(let i = 0;i < text.length;i++){
+        if(text[i] == "v"){
+            verticals.push(text[i+1]);
+            verticals.push(text[i+2]);
+            verticals.push(text[i+3]);
+            i+=3;
+        }
+        if(text[i] == "vt"){
+            textureCoords.push(text[i+1]);
+            textureCoords.push(text[i+2]);
+            i+=2;
+        }
+        if(text[i] == "vn"){
+            normals.push(text[i+1]);
+            normals.push(text[i+2]);
+            normals.push(text[i+3]);
+            i+=3;
+        }
+        if(text[i] == "f"){
+            let ind = text[i+1].split('/');
+            for(let k = 0;k<ind.length;k++){
+                index.push(ind[k]);
+            }
+            ind = text[i+1].split('/');
+            for(let k = 0;k<ind.length;k++){
+                index.push(ind[k]);
+            }
+            ind = text[i+2].split('/');
+            for(let k = 0;k<ind.length;k++){
+                index.push(ind[k]);
+            }
+        }
+    }
+    return [verticals,textureCoords,normals,index];
+}
+loadText("./models/ship.obj", loadModel);
 
 function loadCubemapTexture(textures, minFilter, magFilter) {
+    const CUBEMAP_TARGET = [
+        gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+        gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+        gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+        gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
+    ];
+    
     minFilter = default_arg(minFilter, gl.LINEAR);
     magFilter = default_arg(magFilter, gl.LINEAR);
     var texture = gl.createTexture();
@@ -60,17 +103,6 @@ function loadCubemapTexture(textures, minFilter, magFilter) {
     }
     return texture;
 }
-
-/* TECHNIQUES */
-
-var tchPlanet = new TechniquePlanet();
-var tchPostProcessing = new TechniquePostProcessing();
-var tchSun = new TechniqueSun();
-var tchEarth = new TechniqueEarth();
-var tchSkysphere = new TechniqueSkysphere();
-Postprocessing.Initialize(tchPostProcessing);
-
-/* PLANETS */
 
 function loadPlanets(...planets) {
     for(let i = 0; i < planets.length; i++) {
@@ -97,31 +129,24 @@ function loadPlanets(...planets) {
     }
 }
 
-//var planetGeometry = geom.Icosphere(1.0, 6, true, true);
-var planetGeometry = geom.UVSphere(planetParallels, planetMeridians, 1.0, true, true);
+var tchPlanet, tchSun, tchEarth;
+var planetGeometry;
 
-SUN.technique = tchSun;
-EARTH.technique = tchEarth;
+function loadData() {
+    tchPlanet = new TechniquePlanet();
+    tchSun = new TechniqueSun();
+    tchEarth = new TechniqueEarth();
+    
+    //var planetGeometry = geom.Icosphere(1.0, 6, true, true);
+    planetGeometry = geom.UVSphere(planetParallels, planetMeridians, 1.0, true, true);
 
-loadPlanets(SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE);
+    SUN.technique = tchSun;
+    EARTH.technique = tchEarth;
 
-let wtf = "https://i.ibb.co/vYxRpF4/PSX-20200316-115002.jpg";
-Skysphere.texture = loadCubemapTexture([
-    wtf, wtf, wtf, wtf, wtf, wtf
-]); //Skysphere
-Skysphere.Initialize();
-
-var test = [
-    geom.Icosphere(3, 0, true, true),
-    geom.Icosphere(2, 1, true, true),
-    geom.Icosphere(1.8, 2, true, true),
-    geom.Icosphere(1.6, 3, true, true),
-    geom.Icosphere(1.4, 4, true, true),
-    geom.Icosphere(1.2, 5, true, true),
-    geom.Icosphere(1, 6, true, true)
-];
-let testW = [];
-for(let i = 0; i < test.length; i++) {
-    testW[i] = new mat4();
-    mat4.Translation(testW[i], new vec3((i - test.length / 2) * 4, 50, -110));
+    loadPlanets(SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE);
+    
+    let wtf = "https://i.ibb.co/vYxRpF4/PSX-20200316-115002.jpg";
+    Skysphere.texture = loadCubemapTexture([
+        wtf, wtf, wtf, wtf, wtf, wtf
+    ]);
 }

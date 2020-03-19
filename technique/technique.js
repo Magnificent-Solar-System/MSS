@@ -1,4 +1,4 @@
-const TECHNIQUE_SHADER_GLSL_VERSION_PREFIX = "#version 300 es\n";
+const TECHNIQUE_SHADER_GLSL_VERSION_PREFIX = "#version 310 es\n";
 var SIZEOF_TYPE = new Object();
 
 class Technique {
@@ -10,7 +10,9 @@ class Technique {
         let shader = gl.createShader(type);
         gl.shaderSource(shader, TECHNIQUE_SHADER_GLSL_VERSION_PREFIX + source);
         gl.compileShader(shader); 
-        console.debug(type, gl.getShaderInfoLog(shader));      
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error(gl.getShaderInfoLog(shader));
+        }
         gl.attachShader(this.program, shader);    
         this.shaders.push(shader);
     }

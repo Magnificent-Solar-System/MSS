@@ -1,6 +1,6 @@
 camera = new Camera(new vec3(0,50, -120), 3.14, -0.1, 0);
 
-requestAnimationFrame(mainLoop); //todo: run after loading complete : async textures loading...
+requestAnimationFrame(mainLoop);
 
 var t = 0;
 
@@ -26,9 +26,6 @@ function mainLoop(time_now) {
     
     gl.bindBuffer(gl.ARRAY_BUFFER, planetGeometry.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
-
-    let quat = Quaternion.FromYawPitchRoll(1.7, 0, 2);
-    quat.toMatrix(VENUS.mat_rotation);
     
     for(let i = 0; i < PLANETS.length; ++i)
         drawPlanet(PLANETS[i], viewProjectionMatrix);

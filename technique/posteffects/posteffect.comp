@@ -1,0 +1,15 @@
+layout (local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+//uniform sampler2D depthTexture;
+layout (rgba16f, binding = 1) uniform readonly highp image2D inputTexture;
+layout (rgba16f, binding = 2) uniform writeonly highp image2D outputTexture;
+
+void main() {  
+  ivec2 p = ivec2(gl_GlobalInvocationID.xy);
+  ivec2 siz = imageSize(inputTexture);
+  vec2 uv = vec2(p) / vec2(siz);
+  
+  vec4 color = imageLoad(inputTexture, p);
+  //float depth = texture(depthTexture, uv).x;
+  
+  imageStore(outputTexture, p, vec4(color.r * uv.y, color.g * uv.x, color.b, color.a));
+}
