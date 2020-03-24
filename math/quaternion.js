@@ -511,8 +511,18 @@ class Quaternion {
     static PowerN(q, t) {
         return Quaternion.ExpN(Quaternion.MultiplyByScalar(Quaternion.LogN(q), t));
     }
-    
-    static IntermediateN(q0, q1, q2, q3, s1, s2) {
+
+    static SquadIntermediateN(q0, q1, q2, s1) {
+        let rcQ1 = Quaternion.Reciprocal(q1);
+        s1.copy = Quaternion.Multiply(
+            Quaternion.ExpN(Quaternion.MultiplyByScalar(Quaternion.Add(
+                Quaternion.LogN(Quaternion.Multiply(q2, rcQ1)),
+                Quaternion.LogN(Quaternion.Multiply(q0, rcQ1))
+            ), -0.25)),
+            q1);
+    }
+
+    static SquadIntermediate2N(q0, q1, q2, q3, s1, s2) {
         let rcQ1 = Quaternion.Reciprocal(q1);
         let rcQ2 = Quaternion.Reciprocal(q2);
         

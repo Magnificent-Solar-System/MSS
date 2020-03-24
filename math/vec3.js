@@ -186,6 +186,27 @@ class vec3 {
     static unitZ() {
         return new vec3(0.0, 0.0, 1.0);
     }
+     /**
+     * Returns vector with X component equal to -1.0, Y and Z components equal to 0.0
+     * @returns {vec3}
+     */
+    static unitNX() {
+        return new vec3(-1.0, 0.0, 0.0);
+    }
+    /**
+    * Returns vector with Y component equal to -1.0, X and Z components equal to 0.0
+    * @returns {vec3}
+    */
+    static unitNY() {
+        return new vec3(0.0, -1.0, 0.0);
+    }
+    /**
+    * Returns vector with Z component equal to -1.0, X and Y components equal to 0.0
+    * @returns {vec3}
+    */
+    static unitNZ() {
+        return new vec3(0.0, 0.0, -1.0);
+    }
     
     /**
      * Linear interpolation between two vectors.
