@@ -1,6 +1,7 @@
 let mouseDown = false;
 let prevX = 0;
 let prevY = 0;
+
 window.onmousedown = function(e) {
     mouseDown = true;
     prevX = e.clientX;
@@ -18,6 +19,8 @@ window.onmousemove = function (e) {
       prevY = e.clientY;
   }
 }
+
+
 
 window.onkeydown = function(e) {
     if(e.code == 'KeyQ') fov += 0.03;

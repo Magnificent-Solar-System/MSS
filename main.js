@@ -1,4 +1,4 @@
-camera = new Camera(new vec3(0,50, -120), 3.14, -0.1, 0);
+var camera = new Camera(new vec3(0,50, -120), 3.14, -0.1, 0);
 
 requestAnimationFrame(mainLoop);
 
