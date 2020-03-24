@@ -5,9 +5,13 @@ var fov = 1.2;
 
 
 /* SHIP */
+const SHIP_MASS = 10000;
+const SHIP_START_POSITION = new vec3(0, 50, -120);
+const SHIP_CAMERA_OFFSET = new vec3(0, 2, 5);
+const SHIP_SCALE = new vec3(1, 1, 1);
 
-var rotationSpeed = 1.2;
-var moveSpeed = 0.1;
+const SHIP_MANEUVERING_FORCE = 15000;
+const SHIP_ACCELERATION_FORCE = 35000;
 
 
 /* ASTRONOMY */
@@ -20,7 +24,6 @@ function startVel(pos) {
     let v = vec3.cross(vec3.unitY(), vec3.norm(pos));
     return vec3.mulvs(v, vel);
 }
-
 
 const planetParallels = 128;
 const planetMeridians = 128;

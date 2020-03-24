@@ -1,9 +1,6 @@
-var camera = new Camera(new vec3(0,50, -120), 3.14, -0.1, 0);
-
 requestAnimationFrame(mainLoop);
 
 var t = 0;
-
 var time_last = 0;
 var first_run = true;
 
@@ -19,10 +16,11 @@ function mainLoop(time_now) {
     time_last = time_now;
     t += deltaTime;
     
-    camera.update();
-    
     let viewProjectionMatrix = new mat4();
-    mat4.Multiply(viewProjectionMatrix, camera.viewMatrix, projectionMatrix);
+    mat4.Multiply(viewProjectionMatrix, ship.viewMatrix, projectionMatrix);
+    
+    ship.update(deltaTime);
+    ship.draw(viewProjectionMatrix);
     
     gl.bindBuffer(gl.ARRAY_BUFFER, planetGeometry.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
@@ -30,7 +28,7 @@ function mainLoop(time_now) {
     for(let i = 0; i < PLANETS.length; ++i)
         drawPlanet(PLANETS[i], viewProjectionMatrix);
     
-    Skysphere.Draw(camera.viewMatrix, projectionMatrix);
+    Skysphere.Draw(ship.viewMatrix, projectionMatrix);
     
     if(enablePostprocessing) Postprocessing.EndDrawing();
     requestAnimationFrame(mainLoop);

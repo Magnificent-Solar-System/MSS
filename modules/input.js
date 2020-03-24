@@ -12,9 +12,12 @@ window.onmouseup = function(e) {
 }
 window.onmousemove = function (e) {
   if (mouseDown) {
+      let rotationSpeed = 0.5;
       let deltaYaw = -rotationSpeed * (e.clientX - prevX) / canvas.width;
       let deltaPitch = -rotationSpeed * (e.clientY - prevY) / canvas.height; 
-      camera.rotate(deltaYaw, deltaPitch, 0);
+      
+      ship.transform.rotate(deltaYaw, deltaPitch, 0.0);
+      
       prevX = e.clientX;
       prevY = e.clientY;
   }
@@ -28,16 +31,14 @@ window.onkeydown = function(e) {
     if(e.code == 'Space') {
         enablePostprocessing = !enablePostprocessing;
     }
+    
     if (e.code == 'KeyW') {
-        camera.position = vec3.add(camera.position, vec3.mulvs(camera.zAxis, moveSpeed));
+        ship.body.applyForce(vec3.mulvs(ship.transform.forward, SHIP_ACCELERATION_FORCE));
     }
     if (e.code == 'KeyA') {
-         camera.position = vec3.add(camera.position, vec3.mulvs(camera.xAxis, -moveSpeed));
-    }
-    if (e.code == 'KeyS') {
-         camera.position = vec3.add(camera.position, vec3.mulvs(camera.zAxis, -moveSpeed));
+         ship.body.applyForce(vec3.mulvs(ship.transform.right, -SHIP_MANEUVERING_FORCE));
     }
     if (e.code == 'KeyD') {
-         camera.position = vec3.add(camera.position, vec3.mulvs(camera.xAxis, moveSpeed));
+         ship.body.applyForce(vec3.mulvs(ship.transform.right, SHIP_MANEUVERING_FORCE));
     }
 }

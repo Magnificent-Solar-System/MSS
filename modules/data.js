@@ -129,10 +129,13 @@ function loadPlanets(...planets) {
     }
 }
 
-var tchPlanet, tchSun, tchEarth;
+var tchPlanet, tchSun, tchEarth, tchDefault;
 var planetGeometry;
 
+var modelShip;
+
 function loadData() {
+    tchDefault = new TechniqueDefault();
     tchPlanet = new TechniquePlanet();
     tchSun = new TechniqueSun();
     tchEarth = new TechniqueEarth();
@@ -149,4 +152,17 @@ function loadData() {
     Skysphere.texture = loadCubemapTexture([
         wtf, wtf, wtf, wtf, wtf, wtf
     ]);
+    
+    modelShip = {
+        vertexBuffer : gl.createBuffer(),
+        vertexCount : 3
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, modelShip.vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        0, 0, -4, 0.5, 1, 0, 1, 0,
+        -2, 0, 2, 0, 0, 0, 1, 0,
+        2, 0, 2, 1, 0, 0, 1, 0
+    ]), gl.STATIC_DRAW); 
+    
+    ship = new Ship(modelShip, tchDefault, SUN.texture0, SHIP_START_POSITION, SHIP_MASS, SHIP_SCALE, SHIP_CAMERA_OFFSET);
 }
