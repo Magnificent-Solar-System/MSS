@@ -4,7 +4,7 @@ class Transform {
         this.quaternion = quaternion === undefined ? Quaternion.Identity() : quaternion;
         this.scale = scale === undefined ? new vec3(1, 1, 1) : scale;
         
-        this.forward = vec3.unitZ();
+        this.forward = vec3.unitNZ();
         this.right = vec3.unitX();
         this.up = vec3.unitY();
         
@@ -20,7 +20,7 @@ class Transform {
         
         this.right = this.quaternion.transform(vec3.unitX());
         this.up = this.quaternion.transform(vec3.unitY());
-        this.forward = this.quaternion.transform(vec3.unitZ());
+        this.forward = this.quaternion.transform(vec3.unitNZ());
     }
     
     updateMatrix() {
