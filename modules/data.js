@@ -28,18 +28,18 @@ function loadText(src, onload) {
     oReq.open("GET", src, false);
 
     oReq.onload = function (oEvent) {
-        onload(oReq.responseText);
+       onload(oReq.responseText);
     };
 
     oReq.send(null);
 }
-
+var modelShip;
 function loadModel(txt){
     let text = txt.split('\n').join().split(' ').join().split(',');
     let verticals = [];
     let textureCoords = [];
     let normals = [];
-    let index = [];
+    let result = [];
     for(let i = 0;i < text.length;i++){
         if(text[i] == "v"){
             verticals.push(text[i+1]);
@@ -59,23 +59,27 @@ function loadModel(txt){
             i+=3;
         }
         if(text[i] == "f"){
-            let ind = text[i+1].split('/');
-            for(let k = 0;k<ind.length;k++){
-                index.push(ind[k]);
-            }
-            ind = text[i+1].split('/');
-            for(let k = 0;k<ind.length;k++){
-                index.push(ind[k]);
-            }
-            ind = text[i+2].split('/');
-            for(let k = 0;k<ind.length;k++){
-                index.push(ind[k]);
-            }
+            result.push(verticals[text[i+1].split('/')[0]]);
+            result.push(textureCoords[text[i+1].split('/')[1]]);
+            result.push(normals[text[i+1].split('/')[2]]);
+            result.push(verticals[text[i+2].split('/')[0]]);
+            result.push(textureCoords[text[i+2].split('/')[1]]);
+            result.push(normals[text[i+2].split('/')[2]]);
+            result.push(verticals[text[i+3].split('/')[0]]);
+            result.push(textureCoords[text[i+3].split('/')[1]]);
+            result.push(normals[text[i+3].split('/')[2]]);
+            i+=3;
         }
     }
-    return [verticals,textureCoords,normals,index];
+    var vertBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(result), gl.STATIC_DRAW);
+    modelShip =  {
+        "elementsCount" : result.length,
+        "vertexBuffer" : vertBuffer
+    };
 }
-loadText("./models/ship.obj", loadModel);
+
 
 function loadCubemapTexture(textures, minFilter, magFilter) {
     const CUBEMAP_TARGET = [
@@ -132,7 +136,6 @@ function loadPlanets(...planets) {
 var tchPlanet, tchSun, tchEarth, tchDefault;
 var planetGeometry;
 
-var modelShip;
 
 function loadData() {
     tchDefault = new TechniqueDefault();
@@ -152,17 +155,14 @@ function loadData() {
     Skysphere.texture = loadCubemapTexture([
         wtf, wtf, wtf, wtf, wtf, wtf
     ]);
+    loadText("./models/ship.obj",loadModel);
     
-    modelShip = {
-        vertexBuffer : gl.createBuffer(),
-        vertexCount : 3
-    }
-    gl.bindBuffer(gl.ARRAY_BUFFER, modelShip.vertexBuffer);
+    /*gl.bindBuffer(gl.ARRAY_BUFFER, modelShip.vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
         0, 0, -4, 0.5, 1, 0, 1, 0,
         -2, 0, 2, 0, 0, 0, 1, 0,
         2, 0, 2, 1, 0, 0, 1, 0
-    ]), gl.STATIC_DRAW); 
+    ]), gl.STATIC_DRAW); */
     
     ship = new Ship(modelShip, tchDefault, SUN.texture0, SHIP_START_POSITION, SHIP_MASS, SHIP_SCALE, SHIP_CAMERA_OFFSET);
 }
