@@ -27,14 +27,20 @@ function loadText(src, onload) {
     var oReq = new XMLHttpRequest();
     oReq.open("GET", src, false);
 
-    oReq.onload = function (oEvent) {
-       onload(oReq.responseText);
-    };
+    if(onload){
+        oReq.onload = function (oEvent) {
+            onload(oReq.responseText);
+        };
+    }
+    else{
+        return oReq.responseText;
+    }
 
     oReq.send(null);
 }
 var modelShip;
-function loadModel(txt){
+function loadModel(src){
+    let txt = loadText(src);
     let text = txt.split('\n').join().split(' ').join().split(',');
     let verticals = [];
     let textureCoords = [];
@@ -72,10 +78,10 @@ function loadModel(txt){
         }
     }
     var vertBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(result), gl.STATIC_DRAW);
-    modelShip =  {
-        "elementsCount" : result.length,
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(result), gl.STATIC_DRAW);
+    return {
+        "vertexCount" : result.length,
         "vertexBuffer" : vertBuffer
     };
 }
@@ -155,7 +161,7 @@ function loadData() {
     Skysphere.texture = loadCubemapTexture([
         wtf, wtf, wtf, wtf, wtf, wtf
     ]);
-    loadText("./models/ship.obj",loadModel);
+    
     
     /*gl.bindBuffer(gl.ARRAY_BUFFER, modelShip.vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -164,5 +170,5 @@ function loadData() {
         2, 0, 2, 1, 0, 0, 1, 0
     ]), gl.STATIC_DRAW); */
     
-    ship = new Ship(modelShip, tchDefault, SUN.texture0, SHIP_START_POSITION, SHIP_MASS, SHIP_SCALE, SHIP_CAMERA_OFFSET);
+    ship = new Ship(loadModel("./models/ship.obj"), tchDefault, SUN.texture0, SHIP_START_POSITION, SHIP_MASS, SHIP_SCALE, SHIP_CAMERA_OFFSET);
 }
