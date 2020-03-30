@@ -1,4 +1,4 @@
-const Transform = require(global.dirname + '/objects/Transform.js');
+const Transform = require(global.dirname + '/objects/transform.js');
 const Quaternion = require(global.dirname + '/math/quaternion.js');
 const vec3 = require(global.dirname + '/math/vec3.js');
 const Body = require(global.dirname + '/objects/body.js');
