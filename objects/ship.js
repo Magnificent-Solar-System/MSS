@@ -1,7 +1,7 @@
 const Transform = require(global.dirname + '/objects/transform.js');
 const Body = require(global.dirname + '/objects/body.js');
 const vec3 = require(global.dirname + '/math/vec3.js');
-const Quaternion = require(global.dirname + '/math/Quaternion.js');
+const Quaternion = require(global.dirname + '/math/quaternion.js');
 
 class Ship {
     constructor(id, position) {
