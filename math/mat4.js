@@ -1,4 +1,11 @@
-class mat4 {
+var vec3;
+if(typeof Vector2 === 'undefined') {
+    vec3 = require(global.dirname + '/math/vec3.js');
+} else {
+    vec3 = Vector3;
+}
+
+class Matrix4 {
     constructor () {
         this.m = new Float32Array(16);
     }
@@ -132,9 +139,9 @@ class mat4 {
     }
     
     static World(m, scale, translation, rotation) {
-        let tmp = new mat4();
-        mat4.Multiply(tmp, scale, rotation);
-        mat4.Multiply(m, tmp, translation);
+        let tmp = new Matrix4();
+        Matrix4.Multiply(tmp, scale, rotation);
+        Matrix4.Multiply(m, tmp, translation);
     }
     
     static Identity(m) {
@@ -322,3 +329,4 @@ class mat4 {
         m.m[15] = l.m[12] * r.m[3] + l.m[13] * r.m[7] + l.m[14] * r.m[11] + l.m[15] * r.m[15];
     }
 }
+if(typeof module !== 'undefined') module.exports = Matrix4;

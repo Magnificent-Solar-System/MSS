@@ -1,1 +1,2 @@
-python -m http.server
+node server.js
+cmd /k

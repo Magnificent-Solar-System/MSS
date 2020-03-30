@@ -1,107 +1,69 @@
-/* PROJECTION MATRIX */
-const zNearPlane = 0.1;
-const zFarPlane = 10000.0;
-var fov = 1.2;
-
+const vec3 = require('./math/vec3.js');
 
 /* SHIP */
-const SHIP_MASS = 10000;
-const SHIP_START_POSITION = new vec3(0, 50, -120);
-const SHIP_CAMERA_OFFSET = new vec3(0, 2, 5);
-const SHIP_SCALE = new vec3(1, 1, 1);
+global.SHIP_MASS = 10000;
+global.SHIP_SCALE = new vec3(1, 1, 1);
 
-const SHIP_MANEUVERING_FORCE = 15000;
-const SHIP_ACCELERATION_FORCE = 35000;
+global.SHIP_MANEUVERING_FORCE = 10000;
+global.SHIP_ACCELERATION_FORCE = 35000;
 
+global.SHIP_MAX_YAW = 1.25;
+global.SHIP_MAX_PITCH = 1.25;
+global.SHIP_MAX_ROLL = 1.0;
 
 /* ASTRONOMY */
 
-const tmp = 250;
-const tmp2 = 1e2;
-
-function startVel(pos) {
-    let vel = Math.sqrt(G*SunMass/pos.length);
-    let v = vec3.cross(vec3.unitY(), vec3.norm(pos));
-    return vec3.mulvs(v, vel);
-}
-
-const planetParallels = 128;
-const planetMeridians = 128;
-
-var SUN = {
+global.SUN = {
+    radius : 20,
     mass : 1e13,
-    position : vec3.zero(),
-    radius : 50, 
-    velocity : vec3.zero(),
-    srcTexture0 : "https://i.ibb.co/vXnRgh6/sun.jpg",
-    lightIntensity : new vec4(10, 10, 0, 1),
-    separateWorldMatrix : false
+    position : vec3.zero()
 };
 
-var MERCURY = {
-    mass : tmp2,
-    position : new vec3(tmp, 0, 0),
-    radius : 3,
-    velocity : new vec3(0, 0, 0),
-    srcTexture0 : "https://www.solarsystemscope.com/textures/download/2k_mercury.jpg"
+global.MERCURY = {
+    mass : 100,
+    position : new vec3(-40, 0, 0),
+    radius : 8
 };
 
-var VENUS = {
-    mass : tmp2,
-    position : new vec3(0, 53, -130),
-    radius : 5,
-    velocity : new vec3(0, 0, 0),
-    srcTexture0 : "https://i.ibb.co/D5M2ndm/2k-venus-surface.jpg"
+global.VENUS = {
+    mass : 100,
+    position : new vec3(40, 0, 0),
+    radius : 8
 };
 
-var EARTH = {
-    mass : tmp2,
-    position : new vec3(0, 70, 0),
-    radius : 7,
-    velocity : new vec3(0, 0, 0),
-    srcTexture0 : "https://i.ibb.co/c1Cw03Y/earth.jpg",
-    srcTexture1 : "https://i.ibb.co/WHnwLgj/earth-nightmap.jpg"
+global.EARTH = {
+    mass : 100,
+    position : new vec3(40, 30, 0),
+    radius : 15
 };
 
-var MARS = {
-    mass : tmp2,
-    position : new vec3(0, -tmp, 0),
-    radius : 8,
-    velocity : new vec3(0, 0, 0),
-    srcTexture0 : "https://www.solarsystemscope.com/textures/download/2k_mars.jpg"
+global.MARS = {
+    mass : 100,
+    position : new vec3(0, -50, 0),
+    radius : 8
 };
 
-var JUPITER = {
-    mass : tmp2,
-    position : new vec3(0, 0, tmp),
-    radius : 12,
-    velocity : new vec3(0, 0, 0),
-    srcTexture0 : "https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg"
+global.JUPITER = {
+    mass : 100,
+    position : new vec3(30, 0, 45),
+    radius : 10
 };
 
-var SATURN = {
-    mass : tmp2,
-    position : new vec3(0, 0, -tmp),
-    radius : 15,
-    velocity : new vec3(0, 0, 0),
-    srcTexture0 : "https://www.solarsystemscope.com/textures/download/2k_saturn.jpg"
+global.SATURN = {
+    mass : 100,
+    position : new vec3(30, 10, -30),
+    radius : 15
 };
 
 
-var URANUS = {
-    mass : tmp2,
-    position : new vec3(tmp, 0, tmp),
-    radius : 16,
-    velocity :  new vec3(0, 0, 0),
-    srcTexture0 : "https://i.ibb.co/gjBTnKs/2k-uranus.jpg"
+global.URANUS = {
+    mass : 100,
+    position : new vec3(0, 40, 40),
+    radius : 14
 };
 
-var NEPTUNE = {
-    mass : tmp2,
-    position : new vec3(-tmp, tmp, 0),
-    radius : 17,
-    velocity :  new vec3(0, 0, 0),
-    srcTexture0 : "https://i.ibb.co/54LXC3R/2k-neptune.jpg"
+global.NEPTUNE = {
+    mass : 100,
+    position : new vec3(-40, 40, 0),
+    radius : 14
 };
-
-var PLANETS = [SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE];

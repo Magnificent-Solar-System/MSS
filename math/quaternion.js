@@ -1,3 +1,17 @@
+var vec3;
+if(typeof Vector3 === 'undefined') {
+    vec3 = require(global.dirname + '/math/vec3.js');
+} else {
+    vec3 = Vector3;
+}
+
+var mat4;
+if(typeof Matrix4 === 'undefined') {
+    mat4 = require(global.dirname + '/math/mat4.js');
+} else {
+    mat4 = Matrix4;
+}
+
 class Quaternion {
     /**
      * Constructs new quaternion.
@@ -98,6 +112,37 @@ class Quaternion {
 		let sx = this.s * this.x;
 		let sy = this.s * this.y;
 		let sz = this.s * this.z;
+        
+        m.m[0] = 1.0 - 2.0 * (y2 + z2);
+		m.m[4] = 2.0 * (xy - sz);
+		m.m[8] = 2.0 * (xz + sy);
+		m.m[12] = 0.0;
+
+        m.m[1] = 2.0 * (xy + sz);
+		m.m[5] = 1.0 - 2.0 * (x2 + z2);
+		m.m[9] = 2.0 * (yz - sx);
+		m.m[13] = 0.0;
+
+		m.m[2] = 2.0 * (xz - sy);
+		m.m[6] = 2.0 * (yz + sx);
+		m.m[10] = 1.0 - 2.0 * (x2 + y2);
+		m.m[14] = 0.0;
+
+		m.m[3] = 0.0;
+		m.m[7] = 0.0;
+		m.m[11] = 0.0;
+		m.m[15] = 1.0;
+    }
+    static ToMatrix(q, m) {
+        let x2 = q.x * q.x;
+		let y2 = q.y * q.y;
+		let z2 = q.z * q.z;
+		let xy = q.x * q.y;
+		let xz = q.x * q.z;
+		let yz = q.y * q.z;
+		let sx = q.s * q.x;
+		let sy = q.s * q.y;
+		let sz = q.s * q.z;
         
         m.m[0] = 1.0 - 2.0 * (y2 + z2);
 		m.m[4] = 2.0 * (xy - sz);
@@ -542,3 +587,4 @@ class Quaternion {
     
     static Epsilon = 1e-5;
 }
+if(typeof module !== 'undefined') module.exports = Quaternion;
