@@ -1,5 +1,5 @@
 const vec3 = require(global.dirname + '/math/vec3.js');
-const Quaternion = require(global.dirname + '/math/Quaternion.js');
+const Quaternion = require(global.dirname + '/math/quaternion.js');
 
 class Transform {
     constructor(position, quaternion, scale){
