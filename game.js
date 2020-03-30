@@ -31,6 +31,7 @@ module.exports = {
         });
         
         socket.on("game_input", function(input){
+            if(!players.hasOwnProperty(socket.id)) return;
             let pbody = ships[players[socket.id].ship].body;
             if(input[3]) pbody.applyForce(vec3.mulvs(pbody.transform.forward, global.SHIP_ACCELERATION_FORCE));
             pbody.transform.rotate(-input[1] * 0.3, input[2] * 0.3, input[0] * 0.3);
