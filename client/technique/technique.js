@@ -11,7 +11,7 @@ class Technique {
         gl.shaderSource(shader, TECHNIQUE_SHADER_GLSL_VERSION_PREFIX + source);
         gl.compileShader(shader); 
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            console.error(gl.getShaderInfoLog(shader));
+            console.error(this, gl.getShaderInfoLog(shader));
         }
         gl.attachShader(this.program, shader);    
         this.shaders.push(shader);

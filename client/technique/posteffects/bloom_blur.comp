@@ -1,0 +1,29 @@
+layout (local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+layout (rgba16f, binding = 1) uniform readonly highp image2D inputTexture;
+layout (rgba16f, binding = 2) uniform writeonly highp image2D bluredTexture;
+
+uniform bool uHorizontal;
+const int uBlurCount = 10;
+const float uBlurSize = 0.020;
+
+//const float weight[10] = float[] (0.197413, 0.174667, 0.120978, 0.065591, 0.027835, 0.009245, 0.002403, 0.000489, 0.000078, 0.00001);
+const float weight[10] = float[] (0.101253, 0.098154, 0.089414, 0.076542, 0.061573, 0.046546, 0.033065, 0.022072, 0.013846, 0.008162);
+
+void main() {  
+  ivec2 p = ivec2(gl_GlobalInvocationID.xy);
+  float k = float(imageSize(inputTexture).y) * uBlurSize / float(uBlurCount);
+
+  vec3 result = imageLoad(inputTexture, p).rgb * weight[0];
+  if(uHorizontal) {
+    for(int i = 1; i < uBlurCount; ++i) {
+        result += imageLoad(inputTexture, p + ivec2(float(i) * k, 0)).rgb * weight[i];
+        result += imageLoad(inputTexture, p - ivec2(float(i) * k, 0)).rgb * weight[i];
+    }
+  } else {
+    for(int i = 1; i < uBlurCount; ++i) {
+        result += imageLoad(inputTexture, p + ivec2(0, float(i) * k)).rgb * weight[i];
+        result += imageLoad(inputTexture, p - ivec2(0, float(i) * k)).rgb * weight[i];
+    }
+  }
+  imageStore(bluredTexture, p, vec4(result, 1.0));
+}

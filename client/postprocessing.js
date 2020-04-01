@@ -7,8 +7,10 @@ class Postprocessing {
     
     static Initialize(techniquePostProcessing) {
         this.technique = new TechniquePostProcessing();
-        this.posteffect = new TechniquePosteffect();
-        
+        this.effectBloomBright = new TechniqueBloomBright();
+        this.effectBloomBlur = new TechniqueBloomBlur();
+        this.effectBloomMix = new TechniqueBloomMix();
+
         this.targetTextureWidth = canvas.width;
         this.targetTextureHeight = canvas.height;
         
@@ -30,15 +32,23 @@ class Postprocessing {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.texStorage2D(gl.TEXTURE_2D, 1, gl.RGBA16F, this.targetTextureWidth, this.targetTextureHeight);
         
-        this.temporaryTexture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, this.temporaryTexture);
+        this.temporaryTexture0 = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, this.temporaryTexture0);
         //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, this.targetTextureWidth, this.targetTextureHeight, 0, gl.RGBA, gl.FLOAT, null);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         gl.texStorage2D(gl.TEXTURE_2D, 1, gl.RGBA16F, this.targetTextureWidth, this.targetTextureHeight);
-        
+        this.temporaryTexture1 = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, this.temporaryTexture1);
+        //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, this.targetTextureWidth, this.targetTextureHeight, 0, gl.RGBA, gl.FLOAT, null);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texStorage2D(gl.TEXTURE_2D, 1, gl.RGBA16F, this.targetTextureWidth, this.targetTextureHeight);
+
         this.depthTexture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, this.depthTexture);
         //gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, this.targetTextureWidth, this.targetTextureHeight, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
@@ -66,10 +76,14 @@ class Postprocessing {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         
-        let screenSize = new  vec2(this.targetTextureWidth, this.targetTextureHeight);
-        this.posteffect.Run(this.targetTexture, this.depthTexture, this.temporaryTexture, screenSize);
-        
-        this.technique.Use(this.temporaryTexture);
+        let screenSize = new vec2(this.targetTextureWidth, this.targetTextureHeight);
+        this.effectBloomBright.Run(this.targetTexture, this.temporaryTexture0, screenSize);
+        this.effectBloomBlur.Run(this.temporaryTexture0, this.temporaryTexture1, screenSize, true);
+        this.effectBloomBlur.Run(this.temporaryTexture1, this.temporaryTexture0, screenSize, false);
+        this.effectBloomMix.Run(this.targetTexture, this.temporaryTexture0, this.temporaryTexture1, screenSize);
+
+
+        this.technique.Use(this.temporaryTexture1);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
         this.technique.SetupAttributes();
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

@@ -1,4 +1,3 @@
-/* PROJECTION MATRIX */
 const zNearPlane = 1.0;
 const zFarPlane = 100000.0;
 var fov = 2; 
@@ -7,6 +6,8 @@ var cameraOffset = new Vector3(0, 4, -7);
 
 const planetParallels = 128;
 const planetMeridians = 128;  
+
+const BloomBlurSize = 4;
 
 var SUN = {
     srcTexture0 : "https://i.ibb.co/vXnRgh6/sun.jpg",
