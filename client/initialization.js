@@ -24,6 +24,6 @@ function initialize() {
     Technique.Initialize();
     Skysphere.Initialize();
     Postprocessing.Initialize();
-
+    ParticlesInitialize();
     loadData();
 }

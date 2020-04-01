@@ -7,11 +7,20 @@ socket.on("game_state", function(state){
     gameState = state;
 }); 
 
-console.log(socket);
-
 var t = 0;
 var time_last = 0;
 var first_run = true;
+for(var i = 0; i < 10; i++)
+for(var j = 0; j < 10; j++)
+ParticlesEmit(new Vector3(i - 5, 35 + j, -100), 
+new Vector3(0, 0, 0), 
+new Vector3(0, 0, 0.5), 
+new Vector3(i, j, i * j), 
+new Vector3(10 - i, 10 - j, 0),
+new Vector2(.1, .1), 
+new Vector2(.1, .1),
+i + j * 0.5 + 1);
+
 function loop(time_now) {
     if(gameState === undefined) {
         requestAnimationFrame(loop);
@@ -52,6 +61,8 @@ function loop(time_now) {
     let viewProjectionMatrix = new Matrix4();
     Matrix4.Multiply(viewProjectionMatrix, viewMatrix, projectionMatrix);
 
+    ParticlesUpdateDraw(deltaTime, campos, myship.transform.up, viewProjectionMatrix);
+    
     gl.bindBuffer(gl.ARRAY_BUFFER, planetGeometry.vertexBuffer);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
     for(let i = 0; i < ships.length; ++i) {
