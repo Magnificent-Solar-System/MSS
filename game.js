@@ -5,12 +5,49 @@ const Ship = require('./objects/ship.js');
 var planets = [];
 var players = {};
 var ships = [];
+var lasers = [];
+
+function ShootLaser(tfCannon) {
+    lasers.push({
+        position : vec3.add(tfCannon.position, vec3.mulvs(tfCannon.forward, 3)),
+        velocity : vec3.mulvs(tfCannon.forward, 80),
+        life : 5
+    });
+}
 
 function update() {
-    const deltaTime = 0.001 * 15; 
-    for(var i = 0; i < ships.length; ++i) ships[i].update(deltaTime);
+    const deltaTime = 0.001 * 15;
     
-    io.emit("game_state", [ships, planets]); 
+    let rsd = deltaTime * global.SHIP_ROTATION_SPEED; 
+
+    const playerIDs = Object.keys(players); 
+    for(var i = 0; i < playerIDs.length; ++i) {
+        var ply = players[playerIDs[i]];
+
+        if(ply.input !== undefined) {
+            if(ships[ply.ship] !== undefined) {
+                let pbody = ships[ply.ship].body;
+                if(ply.input[3]) pbody.applyForce(vec3.mulvs(pbody.transform.forward, global.SHIP_ACCELERATION_FORCE));
+                pbody.transform.rotate(-ply.input[1] * rsd, -ply.input[2] * rsd, ply.input[0] * rsd);
+                if(ply.input[5]) ShootLaser(pbody.transform);
+            }
+        }
+        ships[ply.ship].update(deltaTime);
+    }
+    let lasersCount = lasers.length;
+    for(var i = 0; i < lasersCount; i++) {
+        lasers[i].life -= deltaTime;
+        if(lasers[i].life < 0.0) {
+            --lasersCount;
+            lasers[i] = lasers[lasersCount];
+            --i;
+        } else {
+            lasers[i].position = vec3.add(lasers[i].position, vec3.mulvs(lasers[i].velocity, deltaTime));
+        }
+    }
+    lasers.length = lasersCount;
+
+    io.emit("game_state", [ships, planets, lasers]); 
 }
 
 module.exports = {
@@ -32,10 +69,15 @@ module.exports = {
         
         socket.on("game_input", function(input){
             if(!players.hasOwnProperty(socket.id)) return;
-            let pbody = ships[players[socket.id].ship].body;
-            if(input[3]) pbody.applyForce(vec3.mulvs(pbody.transform.forward, global.SHIP_ACCELERATION_FORCE));
-            pbody.transform.rotate(-input[1] * 0.3, input[2] * 0.3, input[0] * 0.3);
-            
+
+            if(input[0] > global.SHIP_MAX_ROLL) input[0] = global.SHIP_MAX_ROLL;
+            else if(input[0] < -global.SHIP_MAX_ROLL) input[0] -= global.SHIP_MAX_ROLL;
+            if(input[1] > global.SHIP_MAX_YAW) input[1] = global.SHIP_MAX_YAW;
+            else if(input[1] < -global.SHIP_MAX_YAW) input[1] -= global.SHIP_MAX_YAW;
+            if(input[2] > global.SHIP_MAX_PITCH) input[2] = global.SHIP_MAX_PITCH;
+            else if(input[2] < -global.SHIP_MAX_PITCH) input[2] -= global.SHIP_MAX_PITCH;
+
+            players[socket.id].input = input;
         });
     },
     start : function() {

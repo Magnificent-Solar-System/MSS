@@ -7,6 +7,8 @@ global.SHIP_SCALE = new vec3(1, 1, 1);
 global.SHIP_MANEUVERING_FORCE = 10000;
 global.SHIP_ACCELERATION_FORCE = 35000;
 
+global.SHIP_ROTATION_SPEED = 5;
+
 global.SHIP_MAX_YAW = 1.25;
 global.SHIP_MAX_PITCH = 1.25;
 global.SHIP_MAX_ROLL = 1.0;

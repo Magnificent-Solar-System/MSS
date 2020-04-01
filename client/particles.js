@@ -1,6 +1,6 @@
 function ParticlesInitialize() {
     particlesParticleBytes = 80;
-    particlesBufferSize = particlesParticleBytes * 5000;
+    particlesBufferSize = particlesParticleBytes * 16000;
 
     particlesDrawTechnique = new TechniqueParticlesDraw();
     particlesUpdateTechnique = new TechniquуParticlesUpdate();

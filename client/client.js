@@ -28,6 +28,7 @@ function loop(time_now) {
     }
     var ships = gameState[0];
     var planets = gameState[1];
+    var lasers = gameState[2];
     
     Postprocessing.BeginDrawing();          
     
@@ -37,11 +38,22 @@ function loop(time_now) {
     t += deltaTime;
     
     var myship;
-    for(let i = 0; i < ships.length; ++i) {
+    for(var i = 0; i < ships.length; ++i) {
         if(socket.id == ships[i].id) {
             myship = ships[i];
             break;
         }
+    }
+
+    for(var i = 0; i < lasers.length; ++i) {
+        ParticlesEmit(lasers[i].position, 
+        Vector3.mulvs(lasers[i].velocity, -0.05), 
+        Vector3.mulvs(lasers[i].velocity, 0.01), 
+        new Vector3(0, 8, 15), 
+        new Vector3(0, 0, 0),
+        new Vector2(.07, .07), 
+        new Vector2(0, 0),
+        1);
     }
 
     //for test
@@ -52,7 +64,7 @@ function loop(time_now) {
         Vector3.mulvs(myship.transform.forward, cameraOffset.z));
     let campos = Vector3.add(myship.transform.position, camoff);
 
-    Matrix4.LookAt(viewMatrix, campos, Vector3.add(campos, myship.transform.forward), Vector3.unitY());
+    Matrix4.LookAt(viewMatrix, campos, Vector3.add(campos, myship.transform.forward), myship.transform.up);
     const mat_translation = new mat4();
     const mat_rotation = new mat4();
     const mat_scale = new mat4();
