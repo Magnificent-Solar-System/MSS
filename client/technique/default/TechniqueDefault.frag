@@ -8,5 +8,5 @@ in float fLight;
 out vec4 fragColor;
 
 void main(){
-    fragColor = texture(uSampler, fTexCoords) * fLight;
+    fragColor = texture(uSampler, fTexCoords) * fLight + vec4(1.0);
 }
