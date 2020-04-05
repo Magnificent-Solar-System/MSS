@@ -30,9 +30,7 @@ function loadText(src, onload , onload1) {
 
     oReq.onload =  function (oEvent) {
         if(!onload1)onload(oReq.responseText);
-        else{
-            onload(oReq.responseText,onload1);
-        } 
+        else onload(oReq.responseText,onload1);
     };
     
     oReq.send(null);
@@ -74,8 +72,7 @@ function loadModel(txt , func){
     }
     vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(result), gl.STATIC_DRAW);
-    //console.log(txt);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(result), gl.STATIC_DRAW);
     func(
         {
             "elementCount" : result.length/8,
@@ -127,7 +124,7 @@ function loadPlanets(...planets) {
 }
 
 var tchPlanet, tchSun, tchEarth, tchDefault;
-var planetGeometry;
+var planetGeometry, shipModel;
 
 function loadData() {
     tchDefault = new TechniqueDefault();
@@ -137,6 +134,8 @@ function loadData() {
     
     //var planetGeometry = geom.Icosphere(1.0, 6, true, true);
     planetGeometry = geom.UVSphere(planetParallels, planetMeridians, 1.0, true, true);
+
+    loadText("models/ship.obj",loadModel,function(model){shipModel = model});
 
     SUN.technique = tchSun;
     EARTH.technique = tchEarth;

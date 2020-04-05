@@ -75,13 +75,7 @@ function loop(time_now) {
 
     ParticlesUpdateDraw(deltaTime, campos, myship.transform.up, viewProjectionMatrix);
     
-    loadText("models/ship.obj",loadModel,function(model){gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBuffer)});
-
-
-
-
-    
-    //gl.bindBuffer(gl.ARRAY_BUFFER, shipModel.vertexBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, shipModel.vertexBuffer);
 
     //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, planetGeometry.indexBuffer);
     for(let i = 0; i < ships.length; ++i) {
@@ -97,8 +91,7 @@ function loop(time_now) {
         tchDefault.SetRotationMatrix(mat_rotation);
         tchDefault.SetViewProjectionMatrix(viewProjectionMatrix);
         //gl.drawElements(gl.TRIANGLES, planetGeometry.elementCount, gl.UNSIGNED_SHORT, 0);
-        loadText("models/ship.obj",loadModel,function(model){gl.drawArrays(gl.TRIANGLES, 0, model.elementCount, gl.UNSIGNED_SHORT)});
-        //gl.drawArrays(gl.TRIANGLES, 0, 60, gl.UNSIGNED_SHORT);
+        gl.drawArrays(gl.TRIANGLES, 0, shipModel.elementCount);
         tchDefault.DisableAttributes();
     }
 
