@@ -23,59 +23,67 @@ function loadTexture(src, minFilter, magFilter, wrapS, wrapT){
     return singleTexture;
 }
 
-function loadText(src, onload) {
+function loadText(src, onload , onload1) {
     var oReq = new XMLHttpRequest();
-    oReq.open("GET", src, false);
+    var onload = onload;
+    oReq.open("GET", src , false);  
 
-    oReq.onload = function (oEvent) {
-        onload(oReq.responseText);
+    oReq.onload =  function (oEvent) {
+        if(!onload1)onload(oReq.responseText);
+        else{
+            onload(oReq.responseText,onload1);
+        } 
     };
-
+    
     oReq.send(null);
 }
 
-function loadModel(txt){
+function loadModel(txt , func){
+    
     let text = txt.split('\n').join().split(' ').join().split(',');
     let verticals = [];
     let textureCoords = [];
     let normals = [];
-    let index = [];
+    let result = [];
     for(let i = 0;i < text.length;i++){
         if(text[i] == "v"){
-            verticals.push(text[i+1]);
-            verticals.push(text[i+2]);
-            verticals.push(text[i+3]);
+            verticals.push(new Vector3(text[i+1],text[i+2],text[i+3]));
             i+=3;
         }
         if(text[i] == "vt"){
-            textureCoords.push(text[i+1]);
-            textureCoords.push(text[i+2]);
+            textureCoords.push(new Vector2(text[i+1],text[i+2]));
             i+=2;
         }
         if(text[i] == "vn"){
-            normals.push(text[i+1]);
-            normals.push(text[i+2]);
-            normals.push(text[i+3]);
+            normals.push(new Vector3(text[i+1],text[i+2],text[i+3]));
             i+=3;
         }
         if(text[i] == "f"){
-            let ind = text[i+1].split('/');
-            for(let k = 0;k<ind.length;k++){
-                index.push(ind[k]);
+            for(let k = 1;k<=3;k++){
+                result.push(Number(verticals[text[i+k].split('/')[0]-1].x));
+                result.push(Number(verticals[text[i+k].split('/')[0]-1].y));
+                result.push(Number(verticals[text[i+k].split('/')[0]-1].z));
+                result.push(Number(textureCoords[text[i+k].split('/')[1]-1].x));
+                result.push(Number(textureCoords[text[i+k].split('/')[1]-1].y));
+                result.push(Number(normals[text[i+k].split('/')[2]-1].x));
+                result.push(Number(normals[text[i+k].split('/')[2]-1].y));
+                result.push(Number(normals[text[i+k].split('/')[2]-1].z));
             }
-            ind = text[i+1].split('/');
-            for(let k = 0;k<ind.length;k++){
-                index.push(ind[k]);
-            }
-            ind = text[i+2].split('/');
-            for(let k = 0;k<ind.length;k++){
-                index.push(ind[k]);
-            }
+            i+=3;
         }
     }
-    return [verticals,textureCoords,normals,index];
+    vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(result), gl.STATIC_DRAW);
+    //console.log(txt);
+    func(
+        {
+            "elementCount" : result.length/8,
+            "vertexBuffer" : vertexBuffer,
+        }
+    );
 }
-loadText("./models/ship.obj", loadModel);
+
 
 function loadCubemapTexture(textures, minFilter, magFilter) {
     const CUBEMAP_TARGET = [
