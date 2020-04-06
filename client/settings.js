@@ -7,7 +7,7 @@ var cameraOffset = new Vector3(0, 4, -7);
 const planetParallels = 128;
 const planetMeridians = 128;  
 
-const BloomBlurSize = 4;
+const BloomBlurSize =4;
 
 var SUN = {
     srcTexture0 : "textures/8k_sun.jpg",
@@ -18,12 +18,12 @@ var MERCURY = {
 };
 
 var VENUS = {
-    srcTexture0 : "textures/8k-venus-surface.jpg"
+    srcTexture0 : "textures/8k_venus_surface.jpg"
 };
 
 var EARTH = {
     srcTexture0 : "textures/8k_earth_daymap.jpg",
-    srcTexture1 : "textures/8k_earth-nightmap.jpg"
+    srcTexture1 : "textures/8k_earth_nightmap.jpg"
 };
 
 var MARS = {
@@ -40,11 +40,11 @@ var SATURN = {
 
 
 var URANUS = {
-    srcTexture0 : "textures/2k-uranus.jpg"
+    srcTexture0 : "textures/2k_uranus.jpg"
 };
 
 var NEPTUNE = {
-    srcTexture0 : "textures/2k-neptune.jpg"
+    srcTexture0 : "textures/2k_neptune.jpg"
 };
 
 var SHIP = {
