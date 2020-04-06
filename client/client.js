@@ -85,7 +85,7 @@ function loop(time_now) {
         Matrix4.World(mat_world, mat_scale, mat_translation, mat_rotation);
         
         tchDefault.Use(planets[0].transform.position);
-        tchDefault.SetTexture(PLANETS_DATA[0].texture0);
+        tchDefault.SetTexture(SHIP.texture0);
         tchDefault.SetupAttributes();
         tchDefault.SetWorldMatrix(mat_world);
         tchDefault.SetRotationMatrix(mat_rotation);

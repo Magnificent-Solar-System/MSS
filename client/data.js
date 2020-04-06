@@ -140,9 +140,9 @@ function loadData() {
     SUN.technique = tchSun;
     EARTH.technique = tchEarth;
 
-    loadPlanets(SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE);
+    loadPlanets(SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, URANUS, NEPTUNE, SHIP);
     
-    let wtf = "https://i.ibb.co/vYxRpF4/PSX-20200316-115002.jpg";
+    let wtf = "textures/8k_stars.jpg";
     Skysphere.texture = loadCubemapTexture([
         wtf, wtf, wtf, wtf, wtf, wtf
     ]);
